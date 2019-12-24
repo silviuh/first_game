@@ -21,7 +21,7 @@ int main(int argc, char* args[])
 		frameStart = SDL_GetTicks();
 		game->handleEvents();
 
-		if (frameStart - lastUpdate >= 150) {
+		if (frameStart - lastUpdate >= 450) {
 			game->update();
 			lastUpdate = SDL_GetTicks();
 		}

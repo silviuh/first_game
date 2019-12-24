@@ -63,6 +63,8 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	}*/
 	level1Map = new Map();
 	mainPlayer = new Hero("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mainCharProfile.png.png", 2, 2, 100);
+	mob1 = new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 5, 5, 100);
+
 
 	return _INITSUCCES;
 }
@@ -148,6 +150,7 @@ void Game::handleEvents() {
 void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
+	mob1->update();
 	//enemy1->update();
 
 	// ! - !
@@ -167,6 +170,7 @@ int Game::render() {
 
 	level1Map->DrawMap();
 	mainPlayer->render();
+	mob1->render();
 	//enemy1->render(this->renderer);
 	SDL_RenderPresent(renderer);
 

@@ -20,7 +20,7 @@ class Map;
 class Game {
 private:
 	Component *mainPlayer;
-	Component *enemy1;
+	Component *mob1;
 	const Uint8* keyStates;
 	int gameHandler;
 
