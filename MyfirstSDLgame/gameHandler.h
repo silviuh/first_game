@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <string>
 #include <utility>
+#include <queue>
+#include <utility>
 //#include "Hero.h"
 
 
@@ -15,6 +17,7 @@
 using namespace std;
 
 class Component;
+class Mob;
 class Map;
 
 class Game {
@@ -47,4 +50,7 @@ public:
 	static SDL_Renderer *renderer;
 	static int heroDirection;
 	static Map* level1Map;
+	static pair<int, int> mobCoordinates*;
+
+
 };

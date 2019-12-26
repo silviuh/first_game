@@ -54,3 +54,8 @@ enum {
 	Dirt,
 	Rock = -1
 };
+
+#define VISITED 999
+
+const int dirX[] = { 0, 1, 0, -1 };
+const int dirY[] = { -1, 0, 1, 0 };
