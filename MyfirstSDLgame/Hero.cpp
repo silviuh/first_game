@@ -1,9 +1,9 @@
 #include "Hero.h"
-
-
+//#include "Mob.h"
 // function used to update the current position of the hero
 // hero moves with user input
 void Hero::update() {
+	bool didNotMove = false;
 	// those are relative not absolut coordinates
 	this->direction = Game::heroDirection; // heroDirection is updated in game::handleEvents
 	int tempX = this->xPos, tempY = this->yPos;
@@ -20,6 +20,9 @@ void Hero::update() {
 		break;
 	case WEST:
 		tempX -= 1;
+		break;
+	case UNSET:
+		didNotMove = true;
 		break;
 	}
 
@@ -49,4 +52,16 @@ void Hero::update() {
 			break;
 		}
 	}
+	
+	/*int lenght = sizeof(Game::arrayOfMobs) / sizeof(void*);
+	vector<Component*>::iterator mobIterator;
+
+	// !
+	for (mobIterator = Game::arrayOfMobs.begin(); mobIterator != Game::arrayOfMobs.end() ; mobIterator++) {
+		if (didNotMove == true)
+			(*mobIterator)->update();
+		else
+			(*mobIterator)->resetLee(0, 0);
+	}
+	*/
 }

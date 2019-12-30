@@ -1,5 +1,6 @@
 #pragma once
 #include "gameHandler.h"
+#include "Menu.h"
 #include "Utils.h"
 #include "Hero.h"
 #include "Mob.h"
@@ -7,9 +8,14 @@
 #include "Map.h"
 
 
+Menu* Game::gameMenu = nullptr;
+
 SDL_Renderer* Game::renderer = nullptr;
 int Game::heroDirection = UNSET;
 Map* Game::level1Map = nullptr;
+//vector<Component*> arrayOfMobs;
+//vector<pair<int, int>> arrayOfCoordinatesForMobs;
+int Mob::mobCounter = 0;
 
 Game ::Game() {
 	this->isRunning = false;
@@ -62,9 +68,20 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 		return _SDL_CreateTextureFromSurface;
 	}*/
 	level1Map = new Map();
+	level1Map->LoadMap(lv1);
 	mainPlayer = new Hero("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mainCharProfile.png.png", 2, 2, 100);
-	mob1 = new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 5, 5, 100);
+	// !
+	/*arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 5, 5, 100));
+	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 6, 5, 100));
+	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 7, 5, 100));
+	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 8, 5, 100));
 
+	arrayOfCoordinatesForMobs.push_back(make_pair(5, 5));
+	arrayOfCoordinatesForMobs.push_back(make_pair(6, 5));
+	arrayOfCoordinatesForMobs.push_back(make_pair(7, 5));
+	arrayOfCoordinatesForMobs.push_back(make_pair(8, 5));
+	*/
+	// !
 
 	return _INITSUCCES;
 }
@@ -150,7 +167,7 @@ void Game::handleEvents() {
 void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
-	mob1->update();
+	//mob1->update();
 	//enemy1->update();
 
 	// ! - !
@@ -170,7 +187,7 @@ int Game::render() {
 
 	level1Map->DrawMap();
 	mainPlayer->render();
-	mob1->render();
+	//mob1->render();
 	//enemy1->render(this->renderer);
 	SDL_RenderPresent(renderer);
 
@@ -243,4 +260,16 @@ void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 		cout << endl << "_SDL_RenderCopy did not work...";
 		break;
 	}
+}
+
+void Game::initMenu() {
+	vector<menuItem> options;
+	menuItem m1 = { "Start Game", nullptr };
+	menuItem m2 = { "Instructions", nullptr };
+	menuItem m3 = { "Exit", nullptr};
+	options.push_back(m1);
+	options.push_back(m2);
+	options.push_back(m3);
+
+	gameMenu = new Menu(250, 80, make_pair(10, 10), options);
 }

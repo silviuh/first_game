@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\DEV TOOLS\Dev\SDL2_image-2.0.1\include;C:\DEV TOOLS\SDL2_image-2.0.5\include;C:\DEV TOOLS\SDL2-2.0.10\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\DEV TOOLS\Dev\SDL2_image-2.0.1\lib\x64;C:\DEV TOOLS\SDL2_image-2.0.5\lib\x64;C:\DEV TOOLS\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\DEV TOOLS\Dev\SDL2\include;C:\DEV TOOLS\Dev\SDL2_image-2.0.1\include;C:\DEV TOOLS\SDL2_image-2.0.5\include;C:\DEV TOOLS\Dev\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DEV TOOLS\Dev\SDL2_ttf-2.0.15\lib\x64;C:\DEV TOOLS\Dev\SDL2_image-2.0.1\lib\x64;C:\DEV TOOLS\SDL2_image-2.0.5\lib\x64;C:\DEV TOOLS\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,7 +98,7 @@
       <AdditionalIncludeDirectories>C:\DEV TOOLS\Dev\SDL2_image-2.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\DEV TOOLS\Dev\SDL2_image-2.0.1\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -137,6 +137,7 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mob.cpp" />
     <ClCompile Include="textureManager.cpp" />
   </ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="gameHandler.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Mob.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Utils.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "Utils.h"
 #include <SDL.h>
+#include "SDL_ttf.h"
 #undef main
 
 #include <SDL_image.h>
@@ -14,11 +15,13 @@
 
 
 
+
 using namespace std;
 
 class Component;
 class Mob;
 class Map;
+class Menu;
 
 class Game {
 private:
@@ -37,7 +40,7 @@ public:
 	~Game();
 
 	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen);
-	void initObjects();
+	//void initObjects();
 	void handleEvents();
 	void update();
 	int render();
@@ -46,11 +49,12 @@ public:
 	void logErrorHandlerFile(int, FILE* fileLogger);
 
 
-
+	// used between translation units
 	static SDL_Renderer *renderer;
 	static int heroDirection;
 	static Map* level1Map;
-	static pair<int, int> mobCoordinates*;
-
-
+	static Menu* gameMenu;
+	static void initMenu();
+	//static vector<Component*> arrayOfMobs;
+	//static vector<pair<int, int>> arrayOfCoordinatesForMobs;
 };

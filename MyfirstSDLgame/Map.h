@@ -22,9 +22,19 @@ public:
 
 	Map();
 	~Map();
-	void LoadMap(int myArray[_X_MAP_BOUND][_Y_MAP_BOUND]);
+	void LoadMap(const int myArray[_X_MAP_BOUND][_Y_MAP_BOUND]);
 	void DrawMap();
 	bool Collision(const int givenX, const int givenY);
 	bool overlap(const SDL_Rect& src, const SDL_Rect& dest);
+	int& accesMapCoordinates(const int givenX, const int givenY) {
+		return map[givenX][givenY];
+	}
+
+
+	int& operator()(const int givenX, const int givenY){
+		return map[givenX][givenY];
+	}
+
+	static bool insideBoundaries(const int givenX, const int givenY);
 		// we will think about this depending how we will move the player or the mob
 };

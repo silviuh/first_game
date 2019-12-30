@@ -14,7 +14,10 @@ int main(int argc, char* args[])
 
 	game = new Game();
 	game->init((char*) "noTitleSet", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false); // we have choosen numbers that divide by 32 for the screen resolution
-	
+	Game::initMenu();
+
+
+
 
 	while (true == game->gameIsRunning()) {
 

@@ -4,7 +4,7 @@
 
 
 // we shall scale the map to the 20 * 32, 25 * 32 dimension
-int lv1[_X_MAP_BOUND][_Y_MAP_BOUND] = {
+/*int lv1[_X_MAP_BOUND][_Y_MAP_BOUND] = {
 	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 	{-1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 2, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
@@ -26,7 +26,7 @@ int lv1[_X_MAP_BOUND][_Y_MAP_BOUND] = {
 	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
 	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
 };
-
+*/
 
 Map::Map() {
 
@@ -76,7 +76,7 @@ void Map::DrawMap() {
 	}
 }
 
-void Map::LoadMap(int givenMap[_X_MAP_BOUND][_Y_MAP_BOUND]) {
+void Map::LoadMap(const int givenMap[_X_MAP_BOUND][_Y_MAP_BOUND]) {
 	for (int row = 0; row < _X_MAP_BOUND; row++) {
 		for (int column = 0; column < _Y_MAP_BOUND; column++) {
 			this->map[row][column] = givenMap[row][column];
@@ -104,4 +104,9 @@ bool Map::overlap(const SDL_Rect& src, const SDL_Rect& dest) {
 		)
 		return true;
 	return false;
+}
+
+
+bool Map::insideBoundaries(const int givenX, const int givenY) {
+	return(givenX > 0 and givenX < _X_MAP_BOUND and givenY > 0 and givenY < _Y_MAP_BOUND);
 }

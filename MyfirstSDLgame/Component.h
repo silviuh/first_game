@@ -36,4 +36,5 @@ public:
 	virtual ~Component() = 0;
 	virtual void update() = 0;
 	void render();
+	virtual void resetLee(const int, const int) = 0;
 };
