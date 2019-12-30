@@ -4,13 +4,14 @@
 
 typedef void(*function)();
 typedef pair<int, int> point;
+class menuItem;
 
 class Menu {
 private:
 	int menuWidth;
 	int menuHeight;
 	point menuLocation;
-	std::vector<menuItem> items;
+	vector<menuItem> items;
 	int currentItem;
 	TTF_Font *font;
 	SDL_Color textColor;
