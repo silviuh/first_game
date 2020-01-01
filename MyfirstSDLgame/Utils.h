@@ -11,7 +11,7 @@
 #define _CLEANUPSUCCES 77777772
 
 
-// <---------------------------------------- DEFINES FOR MAP USAGE ---------------------------------------->
+// <---------------------------------------- DEFINES FOR GTAPIHCS USAGE ---------------------------------------->
 
 #define _X_MAP_BOUND 20
 #define _Y_MAP_BOUND 25
@@ -20,9 +20,8 @@
 #define DIRT1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\dirt1.png"
 #define WATER1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\water1.png"
 #define ROCK1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\rock1.png"
-
-
-
+#define FONT_MENU_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\menuFont.otf"
+#define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
 
 
@@ -85,3 +84,7 @@ const static int lv1[_X_MAP_BOUND][_Y_MAP_BOUND] = {
 };
 
 
+#define LOOPMENU true
+
+
+#define INSTRUCTIONS_TEXT "Move the hero with w, a, s, d.  Attack the mobs with space and try to collect as many gold coins as possible with a view of increasing your high score. Have fun:) (Press enter to go back to the main menu)"

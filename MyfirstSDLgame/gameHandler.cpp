@@ -8,7 +8,7 @@
 #include "Map.h"
 
 
-Menu* Game::gameMenu = nullptr;
+//Menu* Game::gameMenu = nullptr;
 
 SDL_Renderer* Game::renderer = nullptr;
 int Game::heroDirection = UNSET;
@@ -222,8 +222,6 @@ int Game::clean() {
 }
 
 
-
-
 void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 	switch (error) {
 	case _windowFullScreen:
@@ -262,7 +260,7 @@ void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 	}
 }
 
-void Game::initMenu() {
+/*void Game::initMenu() {
 	vector<menuItem> options;
 	menuItem m1 = { "Start Game", nullptr };
 	menuItem m2 = { "Instructions", nullptr };
@@ -273,3 +271,5 @@ void Game::initMenu() {
 
 	gameMenu = new Menu(250, 80, make_pair(10, 10), options);
 }
+
+*/

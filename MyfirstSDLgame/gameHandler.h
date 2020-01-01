@@ -47,14 +47,24 @@ public:
 	int clean();
 	bool gameIsRunning() { return isRunning; }
 	void logErrorHandlerFile(int, FILE* fileLogger);
+	void exitGame();
 
 
+	void switchOffGameLoop() {
+		isRunning = false;
+	}
+
+	void switchOnGameLoop() {
+		isRunning = true;
+	}
 	// used between translation units
 	static SDL_Renderer *renderer;
 	static int heroDirection;
 	static Map* level1Map;
 	static Menu* gameMenu;
-	static void initMenu();
+
+	
+	//static void initMenu();
 	//static vector<Component*> arrayOfMobs;
 	//static vector<pair<int, int>> arrayOfCoordinatesForMobs;
 };

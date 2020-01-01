@@ -8,15 +8,19 @@ Menu::Menu(int width, int height, point location, const std::vector<menuItem> &o
 	currentItem = 0;
 
 	TTF_Init();
-	font = TTF_OpenFont("DOTMATRI.ttf", 20);
-	textColor.r = 255;
-	textColor.g = 0;
-	textColor.b = 0;
+	font = TTF_OpenFont(TAHOMA, 20);
+	
+	textColor[0] = { 204, 0, 204 };
+	textColor[1] = { 255, 255, 51 };
 
 	cursor.x = menuLocation.first + 5;
 	cursor.y = menuLocation.second + 10;
 	cursor.h = 20;
 	cursor.w = 10;
+
+	MenuIsActive = true;
+	instructionsMenuIsActive = false;
+	requestForExitingTheGame = false;
 }
 
 Menu::~Menu() {
@@ -28,10 +32,10 @@ Menu::~Menu() {
 void Menu::moveUp() {
 	if (currentItem == 0) {
 		currentItem = items.size() - 1;
-		cursor.y += (items.size() - 1) * 20;
+		cursor.y += (items.size() - 1) * 70;
 	}
 	else {
-		cursor.y -= 20;
+		cursor.y -= 70;
 		currentItem--;
 	}
 }
@@ -39,10 +43,10 @@ void Menu::moveUp() {
 void Menu::moveDown() {
 	if (currentItem == items.size() - 1) {
 		currentItem = 0;
-		cursor.y -= (items.size() - 1) * 20;
+		cursor.y -= (items.size() - 1) * 70;
 	}
 	else {
-		cursor.y += 20;
+		cursor.y += 70;
 		currentItem++;
 	}
 }
@@ -50,30 +54,27 @@ void Menu::moveDown() {
 
 // !
 void Menu::drawMenu() {
-	SDL_Rect rect;
-	rect.x = menuLocation.first;
-	rect.y = menuLocation.second;
-	rect.h = menuHeight;
-	rect.w = menuWidth;
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = menuLocation.first - 2;
+	blittingRectangle.y = menuLocation.second - 2;
+	blittingRectangle.h = menuHeight - 2;
+	blittingRectangle.w = menuWidth - 2;
 
-	SDL_Rect rect2;
-	rect2.x = menuLocation.first - 2;
-	rect2.y = menuLocation.second - 2;
-	rect2.h = menuHeight - 2;
-	rect2.w = menuWidth - 2;
-
-	point textPos;
-	textPos.first = rect.x + 20;
-	textPos.second = rect.y + 10;
+	SDL_RenderClear(Game::renderer);
 
 	for (unsigned int i = 0; i < items.size(); i++){
-		textSurface = TTF_RenderText_Solid(font, items.at(i).text.c_str(), textColor);
-		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+		if(i == currentItem)
+			textSurface = TTF_RenderText_Solid(font, items.at(i).text.c_str(), textColor[1]);
+		else
+			textSurface = TTF_RenderText_Solid(font, items.at(i).text.c_str(), textColor[0]);
 
-		textureManager::Draw(textTexture, rect, rect2);
-		textPos.second += 20;
+		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+		SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+		blittingRectangle.y += 70;
 		SDL_FreeSurface(textSurface);
 	}
+	
+	SDL_RenderPresent(Game::renderer);
 }
 
 
@@ -82,3 +83,35 @@ void Menu::selectCurrentItem() {
 	items[currentItem].optionFunction();
 }
 
+
+void Menu::handleEvents() {
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_KEYDOWN: {
+			switch (event.key.keysym.sym) {
+			case SDLK_UP:
+				moveUp();
+				break;
+			case SDLK_DOWN:
+				moveDown();
+				break;
+			case SDLK_RETURN:
+				selectCurrentItem();
+				break;
+			}
+			break;
+		}
+		case SDL_QUIT: {
+			MenuIsActive = false;
+			break;
+		}
+		}
+	}
+}
+
+
+void Menu::setInstruction(int offsetInMenu, function givenFunction) {
+	this->items.at(offsetInMenu).optionFunction = givenFunction;
+}
