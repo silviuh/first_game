@@ -20,8 +20,8 @@ int main(int argc, char* args[])
 	int frameTime;
 
 
-	game = new Game();
-	game->init((char*) "noTitleSet", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false); // we have choosen numbers that divide by 32 for the screen resolution
+	game = new Game(GOLD_COINS_LEVEL1);
+	game->init((char*) "noTitleSet", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10); // we have choosen numbers that divide by 32 for the screen resolution
 
 	vector<menuItem> options;
 	menuItem m1 = { "< Start Game >", startGame };

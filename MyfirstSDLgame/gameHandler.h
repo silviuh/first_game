@@ -11,8 +11,8 @@
 #include <utility>
 #include <queue>
 #include <utility>
+#include <time.h>   
 //#include "Hero.h"
-
 
 
 
@@ -20,13 +20,17 @@ using namespace std;
 
 class Component;
 class Mob;
+class Hero;
 class Map;
 class Menu;
+class GoldCoin;
 
 class Game {
 private:
 	Component *mainPlayer;
 	Component *mob1;
+	vector <GoldCoin*> GoldCoinArray;
+	int numberOfGoldCoins;
 	const Uint8* keyStates;
 	int gameHandler;
 
@@ -36,10 +40,10 @@ private:
 	int updateCounter;
 
 public:
-	Game();
+	Game(const int goldCoins);
 	~Game();
 
-	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen);
+	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins);
 	//void initObjects();
 	void handleEvents();
 	void update();
@@ -48,7 +52,6 @@ public:
 	bool gameIsRunning() { return isRunning; }
 	void logErrorHandlerFile(int, FILE* fileLogger);
 	void exitGame();
-
 
 	void switchOffGameLoop() {
 		isRunning = false;
@@ -63,7 +66,8 @@ public:
 	static Map* level1Map;
 	static Menu* gameMenu;
 
-	
+	static pair<int, int> generateRandomCoordinates(Component* hero);
+	static pair<int, int> returnHeroCoordinates(Component* hero);
 	//static void initMenu();
 	//static vector<Component*> arrayOfMobs;
 	//static vector<pair<int, int>> arrayOfCoordinatesForMobs;

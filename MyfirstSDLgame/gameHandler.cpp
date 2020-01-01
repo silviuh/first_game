@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "Hero.h"
 #include "Mob.h"
+#include "GoldCoin.h"
 #include "TextureManager.h"
 #include "Map.h"
 
@@ -17,16 +18,17 @@ Map* Game::level1Map = nullptr;
 //vector<pair<int, int>> arrayOfCoordinatesForMobs;
 int Mob::mobCounter = 0;
 
-Game ::Game() {
+Game ::Game(const int goldCoins) {
 	this->isRunning = false;
 	this->window = nullptr;
+	numberOfGoldCoins = goldCoins;
 }
 
 Game::~Game() {
 
 }
 
-int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen) {
+int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins) {
 	int flags = false;
 	fullScreen ? flags = SDL_WINDOW_FULLSCREEN : flags = false;
 
@@ -70,6 +72,12 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	level1Map = new Map();
 	level1Map->LoadMap(lv1);
 	mainPlayer = new Hero("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mainCharProfile.png.png", 2, 2, 100);
+
+	for (int i = 0; i < numberOfGoldCoins; i++) {
+		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_ASSET, tempPair.first, tempPair.second);
+		GoldCoinArray.push_back(newGoldCoin);
+	}
 	// !
 	/*arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 5, 5, 100));
 	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 6, 5, 100));
@@ -181,14 +189,35 @@ void Game::update() {
 
 
 int Game::render() {
+	SDL_Surface* mySurf = IMG_Load(GOLD_COIN_ASSET);
+	SDL_Texture* myTexture = SDL_CreateTextureFromSurface(Game::renderer, mySurf);
+	SDL_FreeSurface(mySurf);
+	SDL_Rect sr1, sr2, dr1, dr2;
+	sr1.x = sr1.y = sr2.x = sr2.y = 0;
+	sr1.h = sr1.w = sr2.h = sr2.w = SCALESIZE;
+	dr1.h = dr1.w = dr2.h = dr2.w = SCALESIZE;
+	dr1.x = dr1.y = 32;
+	dr2.x = dr2.y = 96;
+
 	if (false != SDL_RenderClear(renderer)) {
 		return _SDL_RenderClear;
 	}
 
 	level1Map->DrawMap();
 	mainPlayer->render();
-	//mob1->render();
-	//enemy1->render(this->renderer);
+
+
+	for (int i = 0; i < numberOfGoldCoins; i++) {
+		GoldCoinArray.at(i)->render();
+		//sr1 = GoldCoinArray.at(i)->returnSourceRect();
+		//dr1 = GoldCoinArray.at(i)->returnDestinationRectangle();
+		//textureManager::Draw(myTexture, sr1, dr1);
+	}
+		//textureManager::Draw(GoldCoinArray.at(i)->returnTexture(), GoldCoinArray.at(i)->returnSourceRect(), GoldCoinArray.at(i)->returnDestinationRectangle());
+		//GoldCoinArray.at(i)->render();
+
+	//textureManager::Draw(myTexture, sr1, dr1);
+	//textureManager::Draw(myTexture, sr2, dr2);
 	SDL_RenderPresent(renderer);
 
 
@@ -216,6 +245,9 @@ int Game::clean() {
 		return _SDL_DestroyRenderer;
 	else
 		SDL_DestroyRenderer(renderer);
+
+	for(int i = 0; i < numberOfGoldCoins; i++)
+		delete GoldCoinArray.at(i);
 
 	SDL_Quit();
 	return _CLEANUPSUCCES;
@@ -273,3 +305,21 @@ void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 }
 
 */
+
+pair<int, int> Game::returnHeroCoordinates(Component* hero) {
+	return make_pair(hero->getXpos(), hero->getYpos());
+}
+
+
+pair<int, int> Game::generateRandomCoordinates(Component* hero) {
+	srand(time(NULL));
+	int xPos, yPos;
+
+	do {
+		 xPos = rand() % 20 + 1;
+		 yPos = rand() % 25 + 1;
+	} while (level1Map->accesMapCoordinates(xPos, yPos) < 0
+		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
+
+	return make_pair(xPos, yPos);
+}

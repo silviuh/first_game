@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="gameHandler.cpp" />
+    <ClCompile Include="GoldCoin.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -144,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="gameHandler.h" />
+    <ClInclude Include="GoldCoin.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />

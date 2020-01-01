@@ -16,11 +16,13 @@
 #define _X_MAP_BOUND 20
 #define _Y_MAP_BOUND 25
 #define SCALESIZE 32
+#define GOLD_COINS_LEVEL1 10
 #define GRASS1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grass1.png"
 #define DIRT1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\dirt1.png"
 #define WATER1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\water1.png"
 #define ROCK1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\rock1.png"
 #define FONT_MENU_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\menuFont.otf"
+#define GOLD_COIN_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\goldCoin.png"
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
 
