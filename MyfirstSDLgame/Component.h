@@ -31,10 +31,15 @@ public:
 		return destinationRectangle;
 	}
 
+	virtual int getCurrentScore() {
+		return UNDEFINED_SCORE;
+	}
+
 	// xPos and yPos will be random at the begging of the level (apart from the hero)
 	Component(const char* imageToLoad, int xPos = 0, int yPos = 0, int health = 100);
 	virtual ~Component() = 0;
 	virtual void update() = 0;
 	void render();
 	virtual void resetLee(const int, const int) = 0;
+	virtual void increaseScore(){}
 };

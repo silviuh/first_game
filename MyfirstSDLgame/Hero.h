@@ -7,6 +7,7 @@ private:
 // particular private attributes for the component
 int direction;
 int oldCoordinateX, oldCoordinateY;
+int score;
 
 
 public:
@@ -14,9 +15,14 @@ public:
 	Hero(const char* filePath, int xPos, int yPos, int health) : Component(filePath, xPos, yPos, health) {
 		oldCoordinateX = xPos;
 		oldCoordinateY = yPos;
+		score = 0;
 	};
 
+	int getCurrentScore() override{
+		return score;
+	}
 
 	void resetLee(const int, const int) override {}
 	void update();
+	void increaseScore();
 };

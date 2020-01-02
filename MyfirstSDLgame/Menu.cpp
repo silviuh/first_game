@@ -8,7 +8,7 @@ Menu::Menu(int width, int height, point location, const std::vector<menuItem> &o
 	currentItem = 0;
 
 	TTF_Init();
-	font = TTF_OpenFont(TAHOMA, 20);
+	font = TTF_OpenFont(BALOO, 20);
 	
 	textColor[0] = { 204, 0, 204 };
 	textColor[1] = { 255, 255, 51 };
@@ -57,8 +57,8 @@ void Menu::drawMenu() {
 	SDL_Rect blittingRectangle;
 	blittingRectangle.x = menuLocation.first - 2;
 	blittingRectangle.y = menuLocation.second - 2;
-	blittingRectangle.h = menuHeight - 2;
-	blittingRectangle.w = menuWidth - 2;
+	blittingRectangle.h = 100;
+	blittingRectangle.w = 250;
 
 	SDL_RenderClear(Game::renderer);
 

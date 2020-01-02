@@ -65,3 +65,8 @@ void Hero::update() {
 	}
 	*/
 }
+
+
+void Hero::increaseScore() {
+	score += 10;
+}

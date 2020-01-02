@@ -68,6 +68,8 @@ public:
 
 	static pair<int, int> generateRandomCoordinates(Component* hero);
 	static pair<int, int> returnHeroCoordinates(Component* hero);
+	static void updateScoreAndCoins(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
+	static void renderScore(const int currentScore);
 	//static void initMenu();
 	//static vector<Component*> arrayOfMobs;
 	//static vector<pair<int, int>> arrayOfCoordinatesForMobs;

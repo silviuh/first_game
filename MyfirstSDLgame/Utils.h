@@ -11,19 +11,30 @@
 #define _CLEANUPSUCCES 77777772
 
 
-// <---------------------------------------- DEFINES FOR GTAPIHCS USAGE ---------------------------------------->
 
+// <---------------------------------------- DEFINES FOR GTAPIHCS USAGE ---------------------------------------->
+#define UNDEFINED_SCORE -1
 #define _X_MAP_BOUND 20
 #define _Y_MAP_BOUND 25
 #define SCALESIZE 32
 #define GOLD_COINS_LEVEL1 10
+
 #define GRASS1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grass1.png"
 #define DIRT1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\dirt1.png"
 #define WATER1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\water1.png"
 #define ROCK1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\rock1.png"
 #define FONT_MENU_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\menuFont.otf"
 #define GOLD_COIN_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\goldCoin.png"
+
+#define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"S
+#define HERO_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\king2.png"
+
+#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png
+#define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png
+
+#define ARCHERY_BLACK "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\archeryBlack.ttf"
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
+#define BALOO "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\baloo.ttf"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
 
 

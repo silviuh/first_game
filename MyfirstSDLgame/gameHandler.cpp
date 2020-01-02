@@ -22,6 +22,7 @@ Game ::Game(const int goldCoins) {
 	this->isRunning = false;
 	this->window = nullptr;
 	numberOfGoldCoins = goldCoins;
+	srand(time(NULL));
 }
 
 Game::~Game() {
@@ -71,11 +72,11 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	}*/
 	level1Map = new Map();
 	level1Map->LoadMap(lv1);
-	mainPlayer = new Hero("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mainCharProfile.png.png", 2, 2, 100);
+	mainPlayer = new Hero(HERO_PNG, 2, 2, 100);
 
-	for (int i = 0; i < numberOfGoldCoins; i++) {
+	for (int i = 0; i <= numberOfGoldCoins; i++) {
 		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_ASSET, tempPair.first, tempPair.second);
+		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_ASSET, tempPair.second, tempPair.first);
 		GoldCoinArray.push_back(newGoldCoin);
 	}
 	// !
@@ -175,6 +176,7 @@ void Game::handleEvents() {
 void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
+	Game::updateScoreAndCoins(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	//mob1->update();
 	//enemy1->update();
 
@@ -207,26 +209,14 @@ int Game::render() {
 	mainPlayer->render();
 
 
-	for (int i = 0; i < numberOfGoldCoins; i++) {
+	for (int i = 0; i < GoldCoinArray.size(); i++) {
 		GoldCoinArray.at(i)->render();
-		//sr1 = GoldCoinArray.at(i)->returnSourceRect();
-		//dr1 = GoldCoinArray.at(i)->returnDestinationRectangle();
-		//textureManager::Draw(myTexture, sr1, dr1);
 	}
-		//textureManager::Draw(GoldCoinArray.at(i)->returnTexture(), GoldCoinArray.at(i)->returnSourceRect(), GoldCoinArray.at(i)->returnDestinationRectangle());
-		//GoldCoinArray.at(i)->render();
+	
+	Game::renderScore(mainPlayer->getCurrentScore());
 
-	//textureManager::Draw(myTexture, sr1, dr1);
-	//textureManager::Draw(myTexture, sr2, dr2);
 	SDL_RenderPresent(renderer);
 
-
-	// uses the entire image, and the whole render frame
-	/*if (false != SDL_RenderCopy(renderer, playerTexture, NULL, &destinationRectangle)) {
-		return _SDL_RenderCopy;
-	}
-
-	SDL_RenderPresent(renderer);*/
 	return _RENDERINGSUCCES;
 } 
 
@@ -246,7 +236,7 @@ int Game::clean() {
 	else
 		SDL_DestroyRenderer(renderer);
 
-	for(int i = 0; i < numberOfGoldCoins; i++)
+	for(int i = 0; i < GoldCoinArray.size(); i++)
 		delete GoldCoinArray.at(i);
 
 	SDL_Quit();
@@ -312,7 +302,6 @@ pair<int, int> Game::returnHeroCoordinates(Component* hero) {
 
 
 pair<int, int> Game::generateRandomCoordinates(Component* hero) {
-	srand(time(NULL));
 	int xPos, yPos;
 
 	do {
@@ -322,4 +311,32 @@ pair<int, int> Game::generateRandomCoordinates(Component* hero) {
 		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
 
 	return make_pair(xPos, yPos);
+}
+
+
+void Game::updateScoreAndCoins(vector <GoldCoin*>& goldCoinArr, const int heroX, const int heroY, Component& mainPlayer) {
+	for (int i = 0; i < goldCoinArr.size(); i++) {
+		if (goldCoinArr.at(i)->getYpos() == heroY and goldCoinArr.at(i)->getXpos() == heroX) {
+			mainPlayer.increaseScore();
+			delete goldCoinArr.at(i);
+			goldCoinArr.erase(goldCoinArr.begin() + i);
+		}
+	}
+}
+
+
+void Game::renderScore(const int currentScore) {
+	string textToDisplay = "CURRENT SCORE: " + to_string(currentScore);
+	SDL_Color scoreColor = { 255, 0, 0 };
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = 620;
+	blittingRectangle.y = 0;
+	blittingRectangle.h = 32;
+	blittingRectangle.w = 150;
+
+	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 230,230,250 }), 350);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 }
