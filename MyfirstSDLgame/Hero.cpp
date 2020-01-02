@@ -67,6 +67,10 @@ void Hero::update() {
 }
 
 
-void Hero::increaseScore() {
-	score += 10;
+void Hero::increaseScore(int number) {
+	score += number;
+}
+
+void Hero::decreaseHealth(int damage) {
+	health -= damage;
 }

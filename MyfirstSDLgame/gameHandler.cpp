@@ -5,11 +5,10 @@
 #include "Hero.h"
 #include "Mob.h"
 #include "GoldCoin.h"
+#include "SpikedTrap.h"
 #include "TextureManager.h"
 #include "Map.h"
 
-
-//Menu* Game::gameMenu = nullptr;
 
 SDL_Renderer* Game::renderer = nullptr;
 int Game::heroDirection = UNSET;
@@ -43,15 +42,7 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 		
 		SDL_Renderer* asd = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 		renderer = asd;
-		
-
-		SDL_Surface* tempSurface = IMG_Load(DIRT1_PICTURE);
-		if (NULL == tempSurface) {
-			return NULL;
-		}
-		// rendererPtr = &asd;
-		SDL_Texture* myTexture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-
+	
 		if (false == renderer)
 			return _sdlCreateRenderer;
 		else {
@@ -65,19 +56,20 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	else 
 		return _windowInitEverything;
 
-	
-	/*playerTexture = textureManager::loadTexture("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mainCharProfile.png.png", this->renderer);
-	if (NULL == playerTexture) {
-		return _SDL_CreateTextureFromSurface;
-	}*/
 	level1Map = new Map();
 	level1Map->LoadMap(lv1);
 	mainPlayer = new Hero(HERO_PNG, 2, 2, 100);
 
 	for (int i = 0; i <= numberOfGoldCoins; i++) {
 		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_ASSET, tempPair.second, tempPair.first);
+		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
 		GoldCoinArray.push_back(newGoldCoin);
+	}
+
+	for (int i = 0; i <= NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
+		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+		SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
+		SpikedTrapArray.push_back(newSpikeyBall);
 	}
 	// !
 	/*arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 5, 5, 100));
@@ -176,7 +168,8 @@ void Game::handleEvents() {
 void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
-	Game::updateScoreAndCoins(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+	Game::trapsManager(SpikedTrapArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	//mob1->update();
 	//enemy1->update();
 
@@ -191,7 +184,7 @@ void Game::update() {
 
 
 int Game::render() {
-	SDL_Surface* mySurf = IMG_Load(GOLD_COIN_ASSET);
+	SDL_Surface* mySurf = IMG_Load(GOLD_COIN_PNG);
 	SDL_Texture* myTexture = SDL_CreateTextureFromSurface(Game::renderer, mySurf);
 	SDL_FreeSurface(mySurf);
 	SDL_Rect sr1, sr2, dr1, dr2;
@@ -211,6 +204,10 @@ int Game::render() {
 
 	for (int i = 0; i < GoldCoinArray.size(); i++) {
 		GoldCoinArray.at(i)->render();
+	}
+
+	for (int i = 0; i < SpikedTrapArray.size(); i++) {
+		SpikedTrapArray.at(i)->render();
 	}
 	
 	Game::renderScore(mainPlayer->getCurrentScore());
@@ -314,16 +311,26 @@ pair<int, int> Game::generateRandomCoordinates(Component* hero) {
 }
 
 
-void Game::updateScoreAndCoins(vector <GoldCoin*>& goldCoinArr, const int heroX, const int heroY, Component& mainPlayer) {
+void Game::coinsManager(vector <GoldCoin*>& goldCoinArr, const int heroX, const int heroY, Component& mainPlayer) {
 	for (int i = 0; i < goldCoinArr.size(); i++) {
 		if (goldCoinArr.at(i)->getYpos() == heroY and goldCoinArr.at(i)->getXpos() == heroX) {
-			mainPlayer.increaseScore();
+			mainPlayer.increaseScore(GOLD_COIN_SCORE_INCREASE);
 			delete goldCoinArr.at(i);
 			goldCoinArr.erase(goldCoinArr.begin() + i);
 		}
 	}
 }
 
+
+void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, const int heroX, const int heroY, Component& mainPlayer) {
+	for (int i = 0; i < SpikedTrapArray.size(); i++) {
+		if (SpikedTrapArray.at(i)->getYpos() == heroY and SpikedTrapArray.at(i)->getXpos() == heroX) {
+			mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
+			delete SpikedTrapArray.at(i);
+			SpikedTrapArray.erase(SpikedTrapArray.begin() + i);
+		}
+	}
+}
 
 void Game::renderScore(const int currentScore) {
 	string textToDisplay = "CURRENT SCORE: " + to_string(currentScore);
@@ -340,3 +347,4 @@ void Game::renderScore(const int currentScore) {
 	SDL_FreeSurface(textSurface);
 	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 }
+

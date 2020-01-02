@@ -140,7 +140,9 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mob.cpp" />
+    <ClCompile Include="SpikedTrap.cpp" />
     <ClCompile Include="textureManager.cpp" />
+    <ClCompile Include="Trap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
@@ -150,7 +152,9 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mob.h" />
+    <ClInclude Include="SpikedTrap.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Trap.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>

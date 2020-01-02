@@ -20,7 +20,7 @@ public:
 	int getYpos() const {
 		return yPos;
 	}
-	
+
 	SDL_Texture* getTexture() const {
 		return objTexture;
 	}
@@ -41,5 +41,6 @@ public:
 	virtual void update() = 0;
 	void render();
 	virtual void resetLee(const int, const int) = 0;
-	virtual void increaseScore(){}
+	virtual void increaseScore(int number) {}
+	virtual void decreaseHealth(int damage) {}
 };

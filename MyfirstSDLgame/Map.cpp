@@ -30,10 +30,10 @@
 
 Map::Map() {
 
-	this->dirt = textureManager::loadTexture(DIRT1_PICTURE);
-	this->grass = textureManager::loadTexture(GRASS1_PICTURE);
-	this->water = textureManager::loadTexture(WATER1_PICTURE);
-	this->rock = textureManager::loadTexture(ROCK1_PICTURE);
+	this->dirt = textureManager::loadTexture(SAND_PNG);
+	this->grass = textureManager::loadTexture(GRASS_PNG);
+	this->water = textureManager::loadTexture(SKY_PNG);
+	this->rock = textureManager::loadTexture(GRAYBRICK_PNG);
 	LoadMap(lv1);
 	
 	//!

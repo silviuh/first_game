@@ -18,24 +18,30 @@
 #define _Y_MAP_BOUND 25
 #define SCALESIZE 32
 #define GOLD_COINS_LEVEL1 10
+#define GOLD_COIN_SCORE_INCREASE 10
+#define SPIKED_BALL_DAMAGE 50
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 3
 
-#define GRASS1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grass1.png"
-#define DIRT1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\dirt1.png"
-#define WATER1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\water1.png"
-#define ROCK1_PICTURE "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\rock1.png"
+#define GRASS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grassTile.png"
+#define SAND_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sand.png"
+#define SKY_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sky.png"
+#define GRAYBRICK_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\graybrick.png"
+#define SPIKEY_BALL_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\spiky_ball.png"
 #define FONT_MENU_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\menuFont.otf"
-#define GOLD_COIN_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\goldCoin.png"
+#define GOLD_COIN_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\goldCoin.png"
 
-#define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"S
+#define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define HERO_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\king2.png"
 
-#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png
-#define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png
+#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
+#define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png"
 
 #define ARCHERY_BLACK "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\archeryBlack.ttf"
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
 #define BALOO "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\baloo.ttf"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
+
+
 
 
 enum ErrorFlagSystem {

@@ -24,12 +24,14 @@ class Hero;
 class Map;
 class Menu;
 class GoldCoin;
+class SpikedTrap;
 
 class Game {
 private:
 	Component *mainPlayer;
 	Component *mob1;
 	vector <GoldCoin*> GoldCoinArray;
+	vector <SpikedTrap*> SpikedTrapArray;
 	int numberOfGoldCoins;
 	const Uint8* keyStates;
 	int gameHandler;
@@ -68,7 +70,8 @@ public:
 
 	static pair<int, int> generateRandomCoordinates(Component* hero);
 	static pair<int, int> returnHeroCoordinates(Component* hero);
-	static void updateScoreAndCoins(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
+	static void coinsManager(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
+	static void trapsManager(vector <SpikedTrap*> &, const int heroX, const int heroY, Component& mainPlayer);
 	static void renderScore(const int currentScore);
 	//static void initMenu();
 	//static vector<Component*> arrayOfMobs;

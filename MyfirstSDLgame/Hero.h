@@ -24,5 +24,6 @@ public:
 
 	void resetLee(const int, const int) override {}
 	void update();
-	void increaseScore();
+	void increaseScore(int number);
+	void decreaseHealth(int damage);
 };

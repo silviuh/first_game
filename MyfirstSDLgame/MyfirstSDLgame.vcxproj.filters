@@ -42,6 +42,12 @@
     <ClCompile Include="GoldCoin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Trap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikedTrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameHandler.h">
@@ -69,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GoldCoin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikedTrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
