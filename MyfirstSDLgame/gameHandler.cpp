@@ -17,10 +17,11 @@ Map* Game::level1Map = nullptr;
 //vector<pair<int, int>> arrayOfCoordinatesForMobs;
 int Mob::mobCounter = 0;
 
-Game ::Game(const int goldCoins) {
+Game ::Game(const int goldCoins, string mapPath) {
 	this->isRunning = false;
 	this->window = nullptr;
 	numberOfGoldCoins = goldCoins;
+	this->currentMapPath = mapPath;
 	srand(time(NULL));
 }
 
@@ -28,7 +29,7 @@ Game::~Game() {
 
 }
 
-int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins) {
+int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame) {
 	int flags = false;
 	fullScreen ? flags = SDL_WINDOW_FULLSCREEN : flags = false;
 
@@ -56,17 +57,18 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	else 
 		return _windowInitEverything;
 
+	currentLevel = currentLevelInGame;
 	level1Map = new Map();
-	level1Map->LoadMap(lv1);
-	mainPlayer = new Hero(HERO_PNG, 2, 2, 100);
+	level1Map->LoadMap(currentMapPath);
+	mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
 
-	for (int i = 0; i <= numberOfGoldCoins; i++) {
+	for (int i = 0; i < numberOfGoldCoins; i++) {
 		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
 		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
 		GoldCoinArray.push_back(newGoldCoin);
 	}
 
-	for (int i = 0; i <= NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
+	for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
 		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
 		SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
 		SpikedTrapArray.push_back(newSpikeyBall);
@@ -152,7 +154,7 @@ void Game::handleEvents() {
 			break;
 		}
 
-
+						
 
 		default:
 			cout << "ok";
@@ -170,6 +172,8 @@ void Game::update() {
 	mainPlayer->update();
 	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	Game::trapsManager(SpikedTrapArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+
+
 	//mob1->update();
 	//enemy1->update();
 
@@ -183,7 +187,7 @@ void Game::update() {
 
 
 
-int Game::render() {
+pair<int, int> Game::render() {
 	SDL_Surface* mySurf = IMG_Load(GOLD_COIN_PNG);
 	SDL_Texture* myTexture = SDL_CreateTextureFromSurface(Game::renderer, mySurf);
 	SDL_FreeSurface(mySurf);
@@ -195,7 +199,7 @@ int Game::render() {
 	dr2.x = dr2.y = 96;
 
 	if (false != SDL_RenderClear(renderer)) {
-		return _SDL_RenderClear;
+		return make_pair (_SDL_RenderClear, SCORE_NOT_INITIALISED);
 	}
 
 	level1Map->DrawMap();
@@ -211,10 +215,18 @@ int Game::render() {
 	}
 	
 	Game::renderScore(mainPlayer->getCurrentScore());
+	Game::renderLife(mainPlayer->getCurrentLife());
+	Game::renderCurrentLevelNumber(currentLevel);
 
 	SDL_RenderPresent(renderer);
 
-	return _RENDERINGSUCCES;
+	if (mainPlayer->getCurrentLife() <= 0)
+		return make_pair(PLAYER_IS_DEAD, mainPlayer->getCurrentScore());
+
+	if (mainPlayer->getCurrentScore() / GOLD_COIN_SCORE_INCREASE == goldCoinsPerLevel[currentLevel - 1][1])
+		return make_pair(PLAYER_WON_THE_LEVEL, mainPlayer->getCurrentScore());
+
+	return make_pair(_RENDERINGSUCCES, SCORE_NOT_INITIALISED);
 } 
 
 
@@ -334,7 +346,6 @@ void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, const int heroX,
 
 void Game::renderScore(const int currentScore) {
 	string textToDisplay = "CURRENT SCORE: " + to_string(currentScore);
-	SDL_Color scoreColor = { 255, 0, 0 };
 	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
 	SDL_Rect blittingRectangle;
 	blittingRectangle.x = 620;
@@ -348,3 +359,33 @@ void Game::renderScore(const int currentScore) {
 	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 }
 
+void Game::renderLife(const int currentLife) {
+	string textToDisplay = "HEALTH: " + to_string(currentLife);
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = 30;
+	blittingRectangle.y = 0;
+	blittingRectangle.h = 32;
+	blittingRectangle.w = 150;
+
+	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 255,160,122 }), 350);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+}
+
+
+void Game::renderCurrentLevelNumber(const int currentLevel) {
+	string textToDisplay = "CURRENT LEVEL: " + to_string(currentLevel);
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = 320;
+	blittingRectangle.y = 0;
+	blittingRectangle.h = 32;
+	blittingRectangle.w = 150;
+
+	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 0,255,255 }), 350);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+}

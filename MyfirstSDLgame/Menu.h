@@ -7,7 +7,7 @@ typedef pair<int, int> point;
 class menuItem;
 
 class Menu {
-private:
+protected:
 	int menuWidth;
 	int menuHeight;
 	point menuLocation;
@@ -24,18 +24,26 @@ private:
 
 
 public:
+	int optionsFlag;
+
 	Menu(int width, int height, point location, const std::vector<menuItem> &options);
 	~Menu();
 	void moveUp();
 	void moveDown();
-	void drawMenu();
+	virtual void drawMenu();
 	void selectCurrentItem();
 	void handleEvents();
 
 	void setInstruction(int offsetInMenu, function);
+
 	void switchOffMenuLoop() {
 		MenuIsActive = false;
 	}
+
+	void switchOnMenuLoop() {
+		MenuIsActive = true;
+	}
+
 	void switchOnInstructionMenu() {
 		instructionsMenuIsActive = true;
 	}

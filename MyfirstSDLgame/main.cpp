@@ -1,13 +1,27 @@
 #include "gameHandler.h"
-#include "Menu.h"
+#include "LevelManager.h"
+#include "EndGameMenu.h"
+
+bool restartGameFlag = false;
+bool backToMainMenuFlag = false;
+int totalScore = 0;
 
 Game *game = nullptr;
-Menu *gameMenu = nullptr;
+Menu *endGameMenu = nullptr;
+Menu* mainMenu = nullptr;
+LevelManager *gameLevelManager = nullptr;
+
+Menu* endGameMenuInit(int finalScore, int levelReached);
+Menu* mainMenuInit();
 
 void displayInstructions();
 void instructionsMenuManager();
 void startGame();
-void quitGame();
+void mainMenuQuitGame();
+
+void restartGame();
+void backToMyMenu();
+void endMenuQuitGame();
 
 
 int main(int argc, char* args[])
@@ -20,24 +34,17 @@ int main(int argc, char* args[])
 	int frameTime;
 
 
-	game = new Game(GOLD_COINS_LEVEL1);
-	game->init((char*) "noTitleSet", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10); // we have choosen numbers that divide by 32 for the screen resolution
+	game = new Game(GOLD_COINS_LEVEL1, FILE_PATH_MAP_LEVEL_1);
+	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10, LEVEL_1); // we have choosen numbers that divide by 32 for the screen resolution
+	mainMenu = mainMenuInit();
+	gameLevelManager = new LevelManager(game);
 
-	vector<menuItem> options;
-	menuItem m1 = { "< Start Game >", startGame };
-	menuItem m2 = { "< Instructions >", instructionsMenuManager};
-	menuItem m3 = { "< Exit Game >", quitGame};
-	options.push_back(m1);
-	options.push_back(m2);
-	options.push_back(m3);
-
-	gameMenu = new Menu(250, 80, make_pair(270, 210), options);
-
-	while (gameMenu->menuIsActive() == true) {
+	MainMenuLabel:
+	while (mainMenu->menuIsActive() == true) {
 		frameStart = SDL_GetTicks();
 
-		gameMenu->drawMenu();
-		gameMenu->handleEvents();
+		mainMenu->drawMenu();
+		mainMenu->handleEvents();
 
 		frameTime = SDL_GetTicks() - frameStart;
 
@@ -46,7 +53,9 @@ int main(int argc, char* args[])
 		}
 	}
 
-	if (gameMenu->returnRequestForExitingTheGame() == false) {
+
+	if (mainMenu->returnRequestForExitingTheGame() == false) {
+		GamePlayLabel:
 		while (true == game->gameIsRunning()) {
 
 			frameStart = SDL_GetTicks();
@@ -57,10 +66,45 @@ int main(int argc, char* args[])
 				lastUpdate = SDL_GetTicks();
 			}
 
-			int gameRenderSucces = game->render();
-			if (_RENDERINGSUCCES != gameRenderSucces) {
-				game->logErrorHandlerFile(gameRenderSucces, NULL);
+			pair<int, int> playerStatus = game->render();
+			if (playerStatus.first == PLAYER_IS_DEAD) {
+				totalScore += playerStatus.second;
+				Menu* endGameMenu = endGameMenuInit(totalScore, game->currentLevel);
+
+				while (endGameMenu->menuIsActive() == true) {
+					frameStart = SDL_GetTicks();
+
+					endGameMenu->drawMenu();
+					endGameMenu->handleEvents();
+
+					switch (endGameMenu->optionsFlag){
+					case RESTART_GAME_FLAG:
+						goto GamePlayLabel;
+						break;
+					case BACK_TO_MY_MENU_FLAG:
+						goto MainMenuLabel;
+						break;
+					case QUIT_GAME_FLAG:
+						cout << "\n You exited the game!";
+						break;
+					default:
+						break;
+					}
+					
+					frameTime = SDL_GetTicks() - frameStart;
+
+					if (frameDelay > frameTime) {
+						SDL_Delay(frameDelay - frameTime);
+					}
+				}
 			}
+			else if (playerStatus.first == PLAYER_WON_THE_LEVEL) {
+				gameLevelManager->getCurrentScoreOnLevelSucces(playerStatus.second);
+				totalScore += playerStatus.second;
+				game = gameLevelManager->loadNextLevel();
+				goto GamePlayLabel;
+			}
+
 
 			// we want 60 frames/sec so we have to delay the current load with the difference between
 			// how much time takes to load SDL once and the desired time for a single frame to take place
@@ -72,17 +116,19 @@ int main(int argc, char* args[])
 		}
 	}
 	
+	delete mainMenu;
+	delete endGameMenu;
 	game->clean();
 	return 0;
 }
 
 void startGame() {
-	gameMenu->switchOffMenuLoop();
+	mainMenu->switchOffMenuLoop();
 	game->switchOnGameLoop();
 }
 
-void quitGame() {
-	gameMenu->switchOffMenuLoop();
+void mainMenuQuitGame() {
+	mainMenu->switchOffMenuLoop();
 	game->switchOffGameLoop();
 }
 
@@ -90,12 +136,12 @@ void quitGame() {
 
 
 void instructionsMenuManager() {
-	gameMenu->switchOnInstructionMenu();
+	mainMenu->switchOnInstructionMenu();
 	SDL_Event event;
 	int frameTime;
 	const int frameDelay = 1000 / 100;
 
-	while (gameMenu->checkIfinstructionsMenuIsActive() == true) {
+	while (mainMenu->checkIfinstructionsMenuIsActive() == true) {
 		Uint32 frameStart = SDL_GetTicks();
 
 		displayInstructions();
@@ -105,16 +151,16 @@ void instructionsMenuManager() {
 			case SDL_KEYDOWN: {
 				switch (event.key.keysym.sym) {
 				case SDLK_RETURN:
-					gameMenu->switchOffInstructionMenu();
+					mainMenu->switchOffInstructionMenu();
 					break;
 				}
 				break;
 			}
 							  // exiting the game
 			case SDL_QUIT: {
-				gameMenu->switchOffInstructionMenu();
-				gameMenu->switchOffMenuLoop();
-				gameMenu->gameExit();
+				mainMenu->switchOffInstructionMenu();
+				mainMenu->switchOffMenuLoop();
+				mainMenu->gameExit();
 				break;
 			}
 			}
@@ -145,4 +191,58 @@ void displayInstructions() {
 
 	SDL_RenderPresent(Game::renderer);
 	SDL_FreeSurface(textSurface);
+}
+
+Menu* endGameMenuInit(int finalScore, int levelReached) {
+	vector<menuItem> optionsForEndGameMenu;
+	menuItem m1 = { "< Restart Game? >", restartGame };
+	menuItem m2 = { "< Back to Main Menu >", backToMyMenu };
+	menuItem m3 = { "< Exit Game >", endMenuQuitGame };
+	optionsForEndGameMenu.push_back(m1);
+	optionsForEndGameMenu.push_back(m2);
+	optionsForEndGameMenu.push_back(m3);
+
+	endGameMenu = new EndGameMenu(250, 80, make_pair(270, 400), optionsForEndGameMenu, finalScore, levelReached);
+	return endGameMenu;
+}
+
+Menu* mainMenuInit(){
+	vector<menuItem> optionsForMainMenu;
+	menuItem m1 = { "< Start Game >", startGame };
+	menuItem m2 = { "< Instructions >", instructionsMenuManager };
+	menuItem m3 = { "< Exit Game >", mainMenuQuitGame };
+	optionsForMainMenu.push_back(m1);
+	optionsForMainMenu.push_back(m2);
+	optionsForMainMenu.push_back(m3);
+
+	mainMenu = new Menu(250, 80, make_pair(270, 210), optionsForMainMenu);
+	return mainMenu;
+}
+
+// restart always loads the first level
+void restartGame() {
+	endGameMenu->switchOffMenuLoop();
+
+	game->clean();
+	delete game;
+	game = new Game(GOLD_COINS_LEVEL1, FILE_PATH_MAP_LEVEL_1);
+	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10, LEVEL_1);
+
+	endGameMenu->optionsFlag = RESTART_GAME_FLAG;
+}
+
+void backToMyMenu() {
+	restartGame();
+
+	mainMenu->switchOnMenuLoop();
+	mainMenu->switchOnInstructionMenu();
+	endGameMenu->optionsFlag = BACK_TO_MY_MENU_FLAG;
+}
+
+void endMenuQuitGame() {
+	endGameMenu->switchOffMenuLoop();
+	mainMenu->switchOffMenuLoop();
+	game->switchOffGameLoop();
+
+	endGameMenu->optionsFlag = QUIT_GAME_FLAG;
 }

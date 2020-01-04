@@ -35,6 +35,10 @@ public:
 		return UNDEFINED_SCORE;
 	}
 
+	virtual int getCurrentLife() {
+		return UNDEFINED_LIFE;
+	}
+
 	// xPos and yPos will be random at the begging of the level (apart from the hero)
 	Component(const char* imageToLoad, int xPos = 0, int yPos = 0, int health = 100);
 	virtual ~Component() = 0;

@@ -34,7 +34,7 @@ Map::Map() {
 	this->grass = textureManager::loadTexture(GRASS_PNG);
 	this->water = textureManager::loadTexture(SKY_PNG);
 	this->rock = textureManager::loadTexture(GRAYBRICK_PNG);
-	LoadMap(lv1);
+	//LoadMap(lv1);
 	
 	//!
 	//this->mapSource.x = this->mapSource.y = 100;
@@ -76,13 +76,38 @@ void Map::DrawMap() {
 	}
 }
 
-void Map::LoadMap(const int givenMap[_X_MAP_BOUND][_Y_MAP_BOUND]) {
-	for (int row = 0; row < _X_MAP_BOUND; row++) {
-		for (int column = 0; column < _Y_MAP_BOUND; column++) {
-			this->map[row][column] = givenMap[row][column];
+//void Map::LoadMap(const int givenMap[_X_MAP_BOUND][_Y_MAP_BOUND]) {
+//	for (int row = 0; row < _X_MAP_BOUND; row++) {
+//		for (int column = 0; column < _Y_MAP_BOUND; column++) {
+//			this->map[row][column] = givenMap[row][column];
+//		}
+//	}
+//}
+
+void Map::LoadMap(const string filePath) {
+	std::fstream mapFile;
+	mapFile.open(filePath);
+	char tile;
+
+	for (int i = 0; i < _X_MAP_BOUND; i++) {
+		for (int j = 0; j < _Y_MAP_BOUND; j++) {
+			mapFile.get(tile);
+			if (tile == '-') {
+				mapFile.get(tile);
+				map[i][j] = -atoi(&tile);
+			}
+			else if( atoi(&tile) > 0)
+				map[i][j] = atoi(&tile);
+
+			mapFile.ignore(); // for spaces
+			mapFile.ignore(); // for commas
 		}
+		//mapFile.ignore(); // for endlines
 	}
+
+	mapFile.close();
 }
+
 
 //bool Map::Collision(const int givenX, const int givenY){
 //	bool result = not ((givenX > 0 and givenX < _X_MAP_BOUND and givenY > 0 and givenY < _Y_MAP_BOUND) 

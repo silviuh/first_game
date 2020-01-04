@@ -21,10 +21,11 @@ Menu::Menu(int width, int height, point location, const std::vector<menuItem> &o
 	MenuIsActive = true;
 	instructionsMenuIsActive = false;
 	requestForExitingTheGame = false;
+
+	optionsFlag = UNSET_FLAG;
 }
 
 Menu::~Menu() {
-	SDL_FreeSurface(textSurface);
 	TTF_CloseFont(font);
 	TTF_Quit();
 }

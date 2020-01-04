@@ -17,10 +17,39 @@
 #define _X_MAP_BOUND 20
 #define _Y_MAP_BOUND 25
 #define SCALESIZE 32
-#define GOLD_COINS_LEVEL1 10
 #define GOLD_COIN_SCORE_INCREASE 10
 #define SPIKED_BALL_DAMAGE 50
 #define NUMBER_OF_SPIKED_BALLS_LEVEL_1 3
+#define UNDEFINED_LIFE -1;
+#define PLAYER_IS_DEAD 99
+#define SCORE_NOT_INITIALISED -99
+#define SCORE_GOLD_PER_COIN 10
+
+#define LEVEL_1 1
+#define LEVEL_2 2
+#define LEVEL_3 3
+
+#define STARTING_X_POS 2
+#define STARTING_Y_POS 2
+
+enum GOLD_COINS_LEVEL {
+	GOLD_COINS_LEVEL1 = 1,
+	GOLD_COINS_LEVEL2,
+	GOLD_COINS_LEVEL3
+};
+
+const int goldCoinsPerLevel[3][2] = {
+	{LEVEL_1, GOLD_COINS_LEVEL1},
+	{LEVEL_2, GOLD_COINS_LEVEL2},
+	{LEVEL_3, GOLD_COINS_LEVEL3},
+};
+
+#define UNSET_FLAG -1
+#define RESTART_GAME_FLAG 1
+#define BACK_TO_MY_MENU_FLAG 2
+#define QUIT_GAME_FLAG 3
+
+#define PLAYER_WON_THE_LEVEL 9999
 
 #define GRASS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grassTile.png"
 #define SAND_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sand.png"
@@ -79,29 +108,10 @@ const int dirX[] = { 0, 1, 0, -1 };
 const int dirY[] = { -1, 0, 1, 0 };
 
 
-const static int lv1[_X_MAP_BOUND][_Y_MAP_BOUND] = {
-	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-	{-1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 2, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
-	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
-};
 
+#define FILE_PATH_MAP_LEVEL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL1_MAP.txt"
+#define FILE_PATH_MAP_LEVEL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL2_MAP.txt"
+#define FILE_PATH_MAP_LEVEL_3 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL3_MAP.txt"
 
 #define LOOPMENU true
 

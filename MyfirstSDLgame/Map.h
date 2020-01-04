@@ -22,7 +22,8 @@ public:
 
 	Map();
 	~Map();
-	void LoadMap(const int myArray[_X_MAP_BOUND][_Y_MAP_BOUND]);
+	//void LoadMap(const int myArray[_X_MAP_BOUND][_Y_MAP_BOUND]);
+	void LoadMap(const string filePath);
 	void DrawMap();
 	bool Collision(const int givenX, const int givenY);
 	bool overlap(const SDL_Rect& src, const SDL_Rect& dest);

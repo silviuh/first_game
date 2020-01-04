@@ -22,6 +22,10 @@ public:
 		return score;
 	}
 
+	int getCurrentLife() override {
+		return health;
+	}
+
 	void resetLee(const int, const int) override {}
 	void update();
 	void increaseScore(int number);
