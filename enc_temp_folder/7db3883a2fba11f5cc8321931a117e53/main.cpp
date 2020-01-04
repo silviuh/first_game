@@ -39,7 +39,7 @@ int main(int argc, char* args[])
 	mainMenu = mainMenuInit();
 	gameLevelManager = new LevelManager(game);
 
-	
+	/*
 	MainMenuLabel:
 	while (mainMenu->menuIsActive() == true) {
 		frameStart = SDL_GetTicks();
@@ -117,7 +117,7 @@ int main(int argc, char* args[])
 		}
 	}
 	
-	
+	*/
 	delete mainMenu;
 	delete endGameMenu;
 	game->clean();
