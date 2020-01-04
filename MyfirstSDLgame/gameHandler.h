@@ -14,6 +14,8 @@
 #include <time.h>   
 
 #include <fstream>
+
+#include <typeinfo>
 //#include "Hero.h"
 
 

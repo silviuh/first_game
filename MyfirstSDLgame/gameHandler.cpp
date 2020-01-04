@@ -235,17 +235,25 @@ void Game::handleEvents() {
 void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
-	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+	
 	Game::trapsManager(SpikedTrapArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	Game::mobsManager(MobsArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer, SpikedTrapArray);
+	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 
 	Mob::movementTime++;
 
-	if (Mob::movementTime == BASIC_MOBS_MOVEMENT_PERIOD) {
-		Mob::movementTime = 0;
-		for (int i = 0; i < MobsArray.size(); i++)
+	if (Mob::movementTime % BASIC_MOBS_MOVEMENT_PERIOD == 0) {
+		for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfBasicMobs; i++) {
 			MobsArray.at(i)->update();
+		}
 	}
+
+	if (Mob::movementTime % UPGRADED_MOBS_MOVEMENT_PERIOD == 0) {
+		for (int i = Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfBasicMobs; i < MobsArray.size(); i++) {
+			MobsArray.at(i)->update();
+		}
+	}
+
 }
 
 
@@ -269,17 +277,16 @@ pair<int, int> Game::render() {
 	levelMap->DrawMap();
 	mainPlayer->render();
 
-
-	for (int i = 0; i < GoldCoinArray.size(); i++) {
-		GoldCoinArray.at(i)->render();
-	}
-
 	for (int i = 0; i < SpikedTrapArray.size(); i++) {
 		SpikedTrapArray.at(i)->render();
 	}
 	
 	for (int i = 0; i < MobsArray.size(); i++)
 		MobsArray.at(i)->render();
+
+	for (int i = 0; i < GoldCoinArray.size(); i++) {
+		GoldCoinArray.at(i)->render();
+	}
 
 	Game::renderScore(mainPlayer->getCurrentScore());
 	Game::renderLife(mainPlayer->getCurrentLife());
@@ -290,7 +297,7 @@ pair<int, int> Game::render() {
 	if (mainPlayer->getCurrentLife() <= 0)
 		return make_pair(PLAYER_IS_DEAD, mainPlayer->getCurrentScore());
 
-	if (mainPlayer->getCurrentScore() / GOLD_COIN_SCORE_INCREASE == goldCoinsPerLevel[currentLevel - 1][1])
+	if (GoldCoinArray.size() == NO_COINS_LEFT)
 		return make_pair(PLAYER_WON_THE_LEVEL, mainPlayer->getCurrentScore());
 
 	return make_pair(_RENDERINGSUCCES, SCORE_NOT_INITIALISED);
@@ -371,8 +378,8 @@ pair<int, int> Game::generateRandomCoordinates(Component* hero) {
 	int xPos, yPos;
 
 	do {
-		 xPos = rand() % 20 + 1;
-		 yPos = rand() % 25 + 1;
+		 xPos = rand() % 19 + 2;
+		 yPos = rand() % 24 + 2;
 	} while (levelMap->accesMapCoordinates(xPos, yPos) < 0
 		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
 
