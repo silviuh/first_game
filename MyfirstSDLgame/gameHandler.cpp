@@ -21,8 +21,6 @@ Game ::Game() {
 	this->isRunning = false;
 	this->window = nullptr;
 	srand(time(NULL));
-
-	Game::initializeStorageContainerForLevels(Game::storageContainerForLevels);
 }
 
 Game::~Game() {
@@ -56,6 +54,9 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	}
 	else
 		return _windowInitEverything;
+
+
+	Game::initializeStorageContainerForLevels(Game::storageContainerForLevels);
 
 	currentLevel = currentLevelInGame;
 	levelMap = new Map();
