@@ -12,17 +12,17 @@
 
 SDL_Renderer* Game::renderer = nullptr;
 int Game::heroDirection = UNSET;
-Map* Game::level1Map = nullptr;
-//vector<Component*> arrayOfMobs;
-//vector<pair<int, int>> arrayOfCoordinatesForMobs;
+Map* Game::levelMap = nullptr;
 int Mob::mobCounter = 0;
+int Mob::movementTime = 0;
+vector < pair<Level, levelSpecificDataContainer> > Game::storageContainerForLevels;
 
-Game ::Game(const int goldCoins, string mapPath) {
+Game ::Game() {
 	this->isRunning = false;
 	this->window = nullptr;
-	numberOfGoldCoins = goldCoins;
-	this->currentMapPath = mapPath;
 	srand(time(NULL));
+
+	Game::initializeStorageContainerForLevels(Game::storageContainerForLevels);
 }
 
 Game::~Game() {
@@ -37,13 +37,13 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 		cout << "Subsystems Initialized...";
 		this->window = SDL_CreateWindow(gameTitle, xpos, ypos, width, height, flags);
 
-		if (false == window) 
+		if (false == window)
 			return _sdlCreateWindow;
-		
-		
+
+
 		SDL_Renderer* asd = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 		renderer = asd;
-	
+
 		if (false == renderer)
 			return _sdlCreateRenderer;
 		else {
@@ -51,44 +51,110 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 			if (false != flag)
 				return _SDL_SetRenderDrawColor;
 		}
-		
+
 		this->isRunning = true;
 	}
-	else 
+	else
 		return _windowInitEverything;
 
 	currentLevel = currentLevelInGame;
-	level1Map = new Map();
-	level1Map->LoadMap(currentMapPath);
+	levelMap = new Map();
 	mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
 
-	for (int i = 0; i < numberOfGoldCoins; i++) {
+	levelMap->LoadMap(Game::storageContainerForLevels.at(currentLevel - 1).second.mapFilePath);
+
+	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfCoins; i++) {
 		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
 		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
 		GoldCoinArray.push_back(newGoldCoin);
 	}
 
-	for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
+	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfSpikedBalls; i++) {
 		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
 		SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
 		SpikedTrapArray.push_back(newSpikeyBall);
 	}
-	// !
-	/*arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 5, 5, 100));
-	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 6, 5, 100));
-	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 7, 5, 100));
-	arrayOfMobs.push_back(new Mob("C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mob01.png", 8, 5, 100));
 
-	arrayOfCoordinatesForMobs.push_back(make_pair(5, 5));
-	arrayOfCoordinatesForMobs.push_back(make_pair(6, 5));
-	arrayOfCoordinatesForMobs.push_back(make_pair(7, 5));
-	arrayOfCoordinatesForMobs.push_back(make_pair(8, 5));
-	*/
-	// !
+	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfBasicMobs; i++) {
+		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+		MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
+	}
 
-	return _INITSUCCES;
+	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfUpgradedMobs; i++) {
+		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+		MobsArray.push_back(new Mob(MOB_LVL_2, tempPair.second, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer));
+	}
+
+	/*switch (currentLevel) {
+	case LEVEL_1: {
+		level1Map->LoadMap(currentMapPath);
+
+		for (int i = 0; i < numberOfGoldCoins; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
+			GoldCoinArray.push_back(newGoldCoin);
+		}
+
+		for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
+			SpikedTrapArray.push_back(newSpikeyBall);
+		}
+
+		for (int i = 0; i < NUMBER_OF_MOBS_LEVEL_1; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
+		}
+		break;
+	}
+
+	case LEVEL_2: {
+		level1Map->LoadMap(currentMapPath);
+
+		for (int i = 0; i < numberOfGoldCoins; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
+			GoldCoinArray.push_back(newGoldCoin);
+		}
+
+		for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
+			SpikedTrapArray.push_back(newSpikeyBall);
+		}
+
+		for (int i = 0; i < NUMBER_OF_MOBS_LEVEL_1; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
+		}
+		break;
+	}
+
+	case LEVEL_3: {
+		level1Map->LoadMap(currentMapPath);
+
+		for (int i = 0; i < numberOfGoldCoins; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
+			GoldCoinArray.push_back(newGoldCoin);
+		}
+
+		for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
+			SpikedTrapArray.push_back(newSpikeyBall);
+		}
+
+		for (int i = 0; i < NUMBER_OF_MOBS_LEVEL_1; i++) {
+			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
+			MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
+		}
+		break;
+	}
+
+				  return _INITSUCCES;
+	}*/
 }
-
 
 
 
@@ -166,22 +232,20 @@ void Game::handleEvents() {
 
 
 
-
 void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
 	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	Game::trapsManager(SpikedTrapArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+	Game::mobsManager(MobsArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer, SpikedTrapArray);
 
+	Mob::movementTime++;
 
-	//mob1->update();
-	//enemy1->update();
-
-	// ! - !
-	//if (mainPlayer->Collision(*enemy1))
-		//cout << endl << "au";
-
-	// cout << endl << "Game got updated of: " << this->updateCounter << " times";
+	if (Mob::movementTime == BASIC_MOBS_MOVEMENT_PERIOD) {
+		Mob::movementTime = 0;
+		for (int i = 0; i < MobsArray.size(); i++)
+			MobsArray.at(i)->update();
+	}
 }
 
 
@@ -202,7 +266,7 @@ pair<int, int> Game::render() {
 		return make_pair (_SDL_RenderClear, SCORE_NOT_INITIALISED);
 	}
 
-	level1Map->DrawMap();
+	levelMap->DrawMap();
 	mainPlayer->render();
 
 
@@ -214,6 +278,9 @@ pair<int, int> Game::render() {
 		SpikedTrapArray.at(i)->render();
 	}
 	
+	for (int i = 0; i < MobsArray.size(); i++)
+		MobsArray.at(i)->render();
+
 	Game::renderScore(mainPlayer->getCurrentScore());
 	Game::renderLife(mainPlayer->getCurrentLife());
 	Game::renderCurrentLevelNumber(currentLevel);
@@ -247,6 +314,10 @@ int Game::clean() {
 
 	for(int i = 0; i < GoldCoinArray.size(); i++)
 		delete GoldCoinArray.at(i);
+	for (int i = 0; i < SpikedTrapArray.size(); i++)
+		delete SpikedTrapArray.at(i);
+	for (int i = 0; i < MobsArray.size(); i++)
+		delete MobsArray.at(i);
 
 	SDL_Quit();
 	return _CLEANUPSUCCES;
@@ -291,20 +362,6 @@ void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 	}
 }
 
-/*void Game::initMenu() {
-	vector<menuItem> options;
-	menuItem m1 = { "Start Game", nullptr };
-	menuItem m2 = { "Instructions", nullptr };
-	menuItem m3 = { "Exit", nullptr};
-	options.push_back(m1);
-	options.push_back(m2);
-	options.push_back(m3);
-
-	gameMenu = new Menu(250, 80, make_pair(10, 10), options);
-}
-
-*/
-
 pair<int, int> Game::returnHeroCoordinates(Component* hero) {
 	return make_pair(hero->getXpos(), hero->getYpos());
 }
@@ -316,7 +373,7 @@ pair<int, int> Game::generateRandomCoordinates(Component* hero) {
 	do {
 		 xPos = rand() % 20 + 1;
 		 yPos = rand() % 25 + 1;
-	} while (level1Map->accesMapCoordinates(xPos, yPos) < 0
+	} while (levelMap->accesMapCoordinates(xPos, yPos) < 0
 		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
 
 	return make_pair(xPos, yPos);
@@ -340,6 +397,26 @@ void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, const int heroX,
 			mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
 			delete SpikedTrapArray.at(i);
 			SpikedTrapArray.erase(SpikedTrapArray.begin() + i);
+		}
+	}
+}
+
+// ! also mobs may die if they hit a spiky ball
+void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray) {
+	for (int i = 0; i < mobsArray.size(); i++) {
+		if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
+			mainPlayer.decreaseHealth(10);
+		}
+
+		else {
+			for (int j = 0; j < SpikedTrapArray.size(); j++) {
+				if (mobsArray.at(i)->getXpos() == SpikedTrapArray.at(j)->getXpos() and mobsArray.at(i)->getYpos() == SpikedTrapArray.at(j)->getYpos()) 
+					mobsArray.at(i)->decreaseHealth(SPIKED_BALL_DAMAGE);
+				if (mobsArray.at(i)->getCurrentLife() <= 0) {
+					delete mobsArray.at(i);
+					mobsArray.erase(mobsArray.begin() + i);
+				}
+			}
 		}
 	}
 }
@@ -388,4 +465,34 @@ void Game::renderCurrentLevelNumber(const int currentLevel) {
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
 	SDL_FreeSurface(textSurface);
 	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+}
+
+
+void Game::initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > & givenVector) {
+	levelSpecificDataContainer genericLevel;
+
+	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_1;
+	genericLevel.numberOfBasicMobs = NUMBER_OF_MOBS_LEVEL_1;
+	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL1;
+	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_1;
+	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_1;
+	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_1;
+	givenVector.push_back(make_pair(LEVEL_1, genericLevel));
+
+	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_2;
+	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_2;
+	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL2;
+	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_2;
+	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_2;
+	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_2;
+	givenVector.push_back(make_pair(LEVEL_2, genericLevel));
+
+	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_3;
+	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_3;
+	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL3;
+	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_3;
+	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_3;
+	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_3;
+	givenVector.push_back(make_pair(LEVEL_3, genericLevel));
+
 }

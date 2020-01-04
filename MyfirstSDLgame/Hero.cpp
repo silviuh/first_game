@@ -28,7 +28,7 @@ void Hero::update() {
 
 	// used for establishing x and y for destionation rectangle
 	// in order to be rendered
-	if (Game::level1Map->Collision(tempX, tempY) != true) {
+	if (Game::levelMap->Collision(tempX, tempY) != true) {
 		switch (this->direction) {
 		case NORTH:
 			this->yPos = tempY;

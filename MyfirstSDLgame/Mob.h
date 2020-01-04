@@ -6,19 +6,22 @@
 
 class Mob : public Component{
 private:
-	queue <pair<int, int>>* myQueue;
+	/*queue <pair<int, int>>* myQueue;
 	int Visited[_X_MAP_BOUND][_Y_MAP_BOUND];
-	int motionFlag;
+	int motionFlag;*/
+	int health;
+	Component* heroRefference;
 	int heroX, heroY; // used to find the current hero location on the tile map
+
 public:
 
 	int mobIndex;
 
 
-	Mob(const char* filePath, int xPos, int yPos, int health);
+	Mob(const char* filePath, int xPos, int yPos, int health, Component* hero);
 
 	~Mob() {
-		delete myQueue;
+		//delete myQueue;
 	}
 
 	/*void inactiveUpdate() {
@@ -29,12 +32,15 @@ public:
 	}
 	*/
 
-	void update() override {}
+	void update() override;
 	void resetLee(const int newRow, const int newColumn) {}
-
+	int getCurrentLife() override {
+		return health;
+	}
 
 	static bool raceCondition(const int givenRow, const int givenColumn) {}
 	static int mobCounter;
+	static int movementTime;
 
 
 };

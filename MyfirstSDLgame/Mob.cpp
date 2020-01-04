@@ -8,20 +8,50 @@
 //	motionFlag = -motionFlag;
 //}
 
-Mob::Mob(const char* filePath, int xPos, int yPos, int health) : Component(filePath, xPos, yPos, health) {
-	motionFlag = -1;
-	myQueue = new queue <pair<int, int>>(); // queue init
-	myQueue->push(make_pair(xPos, yPos));
+Mob::Mob(const char* filePath, int xPos, int yPos, int health, Component* hero) : Component(filePath, xPos, yPos, health) {
+	//motionFlag = -1;
+	//myQueue = new queue <pair<int, int>>(); // queue init
+	//myQueue->push(make_pair(xPos, yPos));
 
 	// used to check already visited positions on the map
-	for (int i = 0; i < _X_MAP_BOUND; i++)
+	/*for (int i = 0; i < _X_MAP_BOUND; i++)
 		for (int j = 0; j < _Y_MAP_BOUND; j++)
-			Visited[i][j] = Game::level1Map->accesMapCoordinates(i, j);
-
+			Visited[i][j] = Game::level1Map->accesMapCoordinates(i, j);*/
+	
+	this->health = health;
+	heroRefference = hero;
 	mobCounter++;
 	mobIndex = mobCounter;
 }
 
+void Mob::update() {
+	int heroX = heroRefference->getXpos();
+	int heroY = heroRefference->getYpos();
+
+	int newX = xPos;
+	int newY = yPos;
+
+	if (xPos <= heroX) {
+		newX++;
+	}
+	if (xPos >= heroX) {
+		newX--;
+	}
+	if (yPos >= heroY) {
+		newY--;
+	}
+	if (yPos <= heroY) {
+		newY++;
+	}
+
+
+	if (Game::levelMap->Collision(newX, newY) != true) {
+		xPos = newX;
+		yPos = newY;
+		destinationRectangle.x = newX * SCALESIZE;
+		destinationRectangle.y = newY * SCALESIZE;
+	}
+}
 
 /*bool Mob::raceCondition(const int givenRow, const int givenColumn) {
 	for (auto it = Game::arrayOfCoordinatesForMobs.begin(); it != Game::arrayOfCoordinatesForMobs.end(); it++) {

@@ -19,15 +19,47 @@
 #define SCALESIZE 32
 #define GOLD_COIN_SCORE_INCREASE 10
 #define SPIKED_BALL_DAMAGE 50
-#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 3
+#define BASIC_MOB_DAMAGE 10
+#define UPGRADED_MOB_DAMAGE 20
+
+
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 6
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_2 10
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_3 12
+
 #define UNDEFINED_LIFE -1;
 #define PLAYER_IS_DEAD 99
 #define SCORE_NOT_INITIALISED -99
 #define SCORE_GOLD_PER_COIN 10
 
+#define BASIC_MOB_HEALTH 50
+#define UPGRADED_MOB_HEALTH 60
+
+#define NUMBER_OF_MOBS_LEVEL_1 5
+#define NUMBER_OF_MOBS_LEVEL_2 7
+#define NUMBER_OF_MOBS_LEVEL_3 9
+
+#define NUMBER_OF_BASIC_MOBS_LEVEL_1 5
+#define NUMBER_OF_BASIC_MOBS_LEVEL_2 3
+#define NUMBER_OF_BASIC_MOBS_LEVEL_3 1
+
+#define NUMBER_OF_UPGRADED_MOBS_LEVEL_1 0
+#define NUMBER_OF_UPGRADED_MOBS_LEVEL_2 4
+#define NUMBER_OF_UPGRADED_MOBS_LEVEL_3 8
+
+#define ZERO_UPGRADED_MOBS 0
+#define ZERO_BASIC_MOBS 0
+
+#define BASIC_MOBS_MOVEMENT_PERIOD 10
+#define UPGRADED_MOBS_MOVEMENT_PERIOD 7
+
 #define LEVEL_1 1
 #define LEVEL_2 2
 #define LEVEL_3 3
+
+#define NUMBER_OF_GOLD_COINS_LEVEL1 5
+#define NUMBER_OF_GOLD_COINS_LEVEL2 6
+#define NUMBER_OF_GOLD_COINS_LEVEL3 7
 
 #define STARTING_X_POS 2
 #define STARTING_Y_POS 2
@@ -39,9 +71,9 @@ enum GOLD_COINS_LEVEL {
 };
 
 const int goldCoinsPerLevel[3][2] = {
-	{LEVEL_1, GOLD_COINS_LEVEL1},
-	{LEVEL_2, GOLD_COINS_LEVEL2},
-	{LEVEL_3, GOLD_COINS_LEVEL3},
+	{LEVEL_1, NUMBER_OF_GOLD_COINS_LEVEL1},
+	{LEVEL_2, NUMBER_OF_GOLD_COINS_LEVEL2},
+	{LEVEL_3, NUMBER_OF_GOLD_COINS_LEVEL3},
 };
 
 #define UNSET_FLAG -1
@@ -69,7 +101,6 @@ const int goldCoinsPerLevel[3][2] = {
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
 #define BALOO "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\baloo.ttf"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
-
 
 
 

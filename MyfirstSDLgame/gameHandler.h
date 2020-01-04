@@ -28,12 +28,18 @@ class Menu;
 class GoldCoin;
 class SpikedTrap;
 
+typedef unsigned int Level;
+struct levelSpecificDataContainer;
+
+
 class Game {
 private:
 	Component *mainPlayer;
 	Component *mob1;
 	vector <GoldCoin*> GoldCoinArray;
 	vector <SpikedTrap*> SpikedTrapArray;
+	vector <Component*> MobsArray;
+
 	string currentMapPath;
 	int numberOfGoldCoins;
 	const Uint8* keyStates;
@@ -45,7 +51,7 @@ private:
 	int updateCounter;
 
 public:
-	Game(const int goldCoins, string mapPath);
+	Game();
 	~Game();
 
 	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame);
@@ -71,21 +77,35 @@ public:
 
 	static SDL_Renderer *renderer;
 	static int heroDirection;
-	static Map* level1Map;
+	static Map* levelMap;
 	static Menu* gameMenu;
 
+
+	static vector < pair<Level, levelSpecificDataContainer> > storageContainerForLevels;
 	static pair<int, int> generateRandomCoordinates(Component* hero);
 	static pair<int, int> returnHeroCoordinates(Component* hero);
 	static void coinsManager(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
 	static void trapsManager(vector <SpikedTrap*> &, const int heroX, const int heroY, Component& mainPlayer);
+	static void mobsManager(vector <Component*> &, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray);
+
 	static void renderScore(const int currentScore);
 	static void renderLife(const int currentLife);
 	static void renderCurrentLevelNumber(const int currentLevel);
-	static bool healthManager(Component& mainPlayer);
+	static void initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > &);
+	
 
 
 
 	//static void initMenu();
 	//static vector<Component*> arrayOfMobs;
 	//static vector<pair<int, int>> arrayOfCoordinatesForMobs;
+};
+
+struct levelSpecificDataContainer{
+	int numberOfCoins;
+	int numberOfSpikedBalls;
+	int numberOfMobs;
+	int numberOfBasicMobs;
+	int numberOfUpgradedMobs;
+	string mapFilePath;
 };
