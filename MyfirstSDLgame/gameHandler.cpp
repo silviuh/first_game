@@ -55,7 +55,6 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	else
 		return _windowInitEverything;
 
-
 	Game::initializeStorageContainerForLevels(Game::storageContainerForLevels);
 
 	currentLevel = currentLevelInGame;
@@ -63,102 +62,67 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
 
 	levelMap->LoadMap(Game::storageContainerForLevels.at(currentLevel - 1).second.mapFilePath);
+	generateBluePrintMap();
+
+
+	vector <pair<int, int>> coinList;
+	generateRandomCoordinates(coinList, mainPlayer,
+							 Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfCoins,
+							 mapBluePrint, levelMap);
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfCoins; i++) {
-		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
+		pair<int, int> tempPair = coinList.at(i);
+		GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.first, tempPair.second);
 		GoldCoinArray.push_back(newGoldCoin);
+		mapBluePrint[tempPair.first][tempPair.second] = COIN_ON_MAP;
 	}
+
+
+
+
+	vector <pair <int, int>> spikeyBallList;
+	generateRandomCoordinates(spikeyBallList, mainPlayer,
+		Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfSpikedBalls,
+		mapBluePrint, levelMap);
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfSpikedBalls; i++) {
-		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-		SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
+		pair<int, int> tempPair = spikeyBallList.at(i);
+		SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.first, tempPair.second);
 		SpikedTrapArray.push_back(newSpikeyBall);
+		mapBluePrint[tempPair.first][tempPair.second] = SPIKY_BALL_ON_MAP;
 	}
+
+
+
+
+	vector <pair <int, int>> basicMobList;
+	generateRandomCoordinates(basicMobList, mainPlayer,
+							 Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfBasicMobs,
+							 mapBluePrint, levelMap);
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfBasicMobs; i++) {
-		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-		MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
+		pair<int, int> tempPair = basicMobList.at(i);
+		Component* newBasicMob = new  Mob(MOB_LVL_1, tempPair.first, tempPair.second, BASIC_MOB_HEALTH, mainPlayer);
+		MobsArray.push_back(newBasicMob);
+		mapBluePrint[tempPair.first][tempPair.second] = BASIC_MOB_ON_MAP;
 	}
+
+
+
+
+	vector <pair <int, int>> upgradedMobList;
+	generateRandomCoordinates(upgradedMobList, mainPlayer,
+							  Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfUpgradedMobs,
+						      mapBluePrint, levelMap);
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfUpgradedMobs; i++) {
-		pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-		MobsArray.push_back(new Mob(MOB_LVL_2, tempPair.second, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer));
+		pair<int, int> tempPair = upgradedMobList.at(i);
+		Component* newUpgradedMob = new  Mob(MOB_LVL_2, tempPair.first, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer);
+		MobsArray.push_back(newUpgradedMob);
+		mapBluePrint[tempPair.first][tempPair.second] = UPGRADED_MOB_ON_MAP;
 	}
 
-	/*switch (currentLevel) {
-	case LEVEL_1: {
-		level1Map->LoadMap(currentMapPath);
-
-		for (int i = 0; i < numberOfGoldCoins; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
-			GoldCoinArray.push_back(newGoldCoin);
-		}
-
-		for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
-			SpikedTrapArray.push_back(newSpikeyBall);
-		}
-
-		for (int i = 0; i < NUMBER_OF_MOBS_LEVEL_1; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
-		}
-		break;
-	}
-
-	case LEVEL_2: {
-		level1Map->LoadMap(currentMapPath);
-
-		for (int i = 0; i < numberOfGoldCoins; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
-			GoldCoinArray.push_back(newGoldCoin);
-		}
-
-		for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
-			SpikedTrapArray.push_back(newSpikeyBall);
-		}
-
-		for (int i = 0; i < NUMBER_OF_MOBS_LEVEL_1; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
-		}
-		break;
-	}
-
-	case LEVEL_3: {
-		level1Map->LoadMap(currentMapPath);
-
-		for (int i = 0; i < numberOfGoldCoins; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			GoldCoin* newGoldCoin = new GoldCoin(GOLD_COIN_PNG, tempPair.second, tempPair.first);
-			GoldCoinArray.push_back(newGoldCoin);
-		}
-
-		for (int i = 0; i < NUMBER_OF_SPIKED_BALLS_LEVEL_1; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			SpikedTrap* newSpikeyBall = new SpikedTrap(SPIKEY_BALL_PNG, tempPair.second, tempPair.first);
-			SpikedTrapArray.push_back(newSpikeyBall);
-		}
-
-		for (int i = 0; i < NUMBER_OF_MOBS_LEVEL_1; i++) {
-			pair<int, int> tempPair = Game::generateRandomCoordinates(mainPlayer);
-			MobsArray.push_back(new Mob(MOB_LVL_1, tempPair.second, tempPair.first, BASIC_MOB_HEALTH, mainPlayer));
-		}
-		break;
-	}
-
-				  return _INITSUCCES;
-	}*/
 }
-
-
-
 
 void Game::handleEvents() {
 	SDL_Event event;
@@ -350,7 +314,7 @@ void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 		cout << endl << "_SDL_RenderClear did not work...";
 		break;
 	case _SDL_DestroyWindow:
-		cout << endl << "_SDL_DestroyWindow did not work...";
+		cout << endl << "_SDL_DestroyWindow did not work..."; 
 		break;
 	case _SDL_DestroyRenderer:
 		cout << endl << "_SDL_DestroyRenderer did not work...";
@@ -375,18 +339,49 @@ pair<int, int> Game::returnHeroCoordinates(Component* hero) {
 }
 
 
-pair<int, int> Game::generateRandomCoordinates(Component* hero) {
-	int xPos, yPos;
+//pair<int, int> Game::generateRandomCoordinates(Component* hero) {
+//	int xPos, yPos;
+//
+//	do {
+//		 xPos = rand() % 19 + 2;
+//		 yPos = rand() % 24 + 2;
+//	} while (levelMap->accesMapCoordinates(xPos, yPos) < 0
+//		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
+//
+//	return make_pair(xPos, yPos);
+//}
 
-	do {
-		 xPos = rand() % 19 + 2;
-		 yPos = rand() % 24 + 2;
-	} while (levelMap->accesMapCoordinates(xPos, yPos) < 0
-		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
 
-	return make_pair(xPos, yPos);
+void Game::generateBluePrintMap() {
+	for (int i = 0; i < _X_MAP_BOUND; i++)
+		for (int j = 0; j < _Y_MAP_BOUND; j++)
+			mapBluePrint[i][j] = levelMap->accesMapCoordinates(i, j);
 }
 
+ bool Game::notInBluePrintMap(int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], int xPos, int yPos) {
+	 return (mapBluePrint[xPos][yPos] < 0);
+}
+
+void Game::generateRandomCoordinates(vector <pair<int, int>> & list, Component* hero, int sizeOfRequieredList, int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], Map* levelMap) {
+	int heroX = hero->getXpos();
+	int heroY = hero->getYpos();
+	int xPos, yPos;
+	bool inVector;
+
+	for (int i = 0; i < sizeOfRequieredList; i++) {
+		do {
+			inVector = false;
+			xPos = rand() % ( _X_MAP_BOUND - 3) + 2;
+			yPos = rand() % (_Y_MAP_BOUND - 3) + 2;
+			for (int i = 0; i < list.size(); i++)
+				if (make_pair(xPos, yPos) == list.at(i))
+					inVector = true;
+
+		} while (Game::notInBluePrintMap(mapBluePrint, xPos, yPos) 
+			or inVector or levelMap->accesMapCoordinates(yPos, xPos) < 0);
+		list.push_back( make_pair(xPos, yPos));
+	}
+}
 
 void Game::coinsManager(vector <GoldCoin*>& goldCoinArr, const int heroX, const int heroY, Component& mainPlayer) {
 	for (int i = 0; i < goldCoinArr.size(); i++) {

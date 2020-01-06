@@ -29,7 +29,7 @@ Game* LevelManager::loadNextLevel() {
 		gameHandlerReference->clean();
 		delete gameHandlerReference;
 		gameHandlerReference = new Game();
-		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10, LEVEL_2);
+		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_2);
 		succes = true;
 		break;
 	}
@@ -41,7 +41,7 @@ Game* LevelManager::loadNextLevel() {
 		gameHandlerReference->clean();
 		delete gameHandlerReference;
 		gameHandlerReference = new Game();
-		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10, LEVEL_3);
+		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_3);
 		succes = true;
 		break;
 	}

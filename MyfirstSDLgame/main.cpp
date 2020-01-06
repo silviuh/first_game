@@ -35,7 +35,7 @@ int main(int argc, char* args[])
 
 
 	game = new Game();
-	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10, LEVEL_1); // we have choosen numbers that divide by 32 for the screen resolution
+	game->init((char*) "IN DIRE NEED OF SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_1); // we have choosen numbers that divide by 32 for the screen resolution
 	mainMenu = mainMenuInit();
 	gameLevelManager = new LevelManager(game);
 
@@ -228,7 +228,7 @@ void restartGame() {
 	game->clean();
 	delete game;
 	game = new Game();
-	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false, 10, LEVEL_1);
+	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_1);
 
 	endGameMenu->optionsFlag = RESTART_GAME_FLAG;
 }

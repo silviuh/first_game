@@ -42,6 +42,8 @@ private:
 	vector <SpikedTrap*> SpikedTrapArray;
 	vector <Component*> MobsArray;
 
+	int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND];
+
 	string currentMapPath;
 	int numberOfGoldCoins;
 	const Uint8* keyStates;
@@ -84,7 +86,11 @@ public:
 
 
 	static vector < pair<Level, levelSpecificDataContainer> > storageContainerForLevels;
-	static pair<int, int> generateRandomCoordinates(Component* hero);
+
+	static void generateRandomCoordinates(vector <pair<int, int>> & list, Component* hero, int sizeOfRequieredList, int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], Map* levelMap);
+	static bool notInBluePrintMap(int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], int xPos, int yPos);
+	void generateBluePrintMap();
+
 	static pair<int, int> returnHeroCoordinates(Component* hero);
 	static void coinsManager(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
 	static void trapsManager(vector <SpikedTrap*> &, const int heroX, const int heroY, Component& mainPlayer);

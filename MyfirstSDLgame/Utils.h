@@ -14,7 +14,7 @@
 
 // <---------------------------------------- DEFINES FOR GTAPIHCS USAGE ---------------------------------------->
 #define UNDEFINED_SCORE -1
-#define _X_MAP_BOUND 20
+#define _X_MAP_BOUND 25
 #define _Y_MAP_BOUND 25
 #define SCALESIZE 32
 #define GOLD_COIN_SCORE_INCREASE 10
@@ -22,8 +22,12 @@
 #define BASIC_MOB_DAMAGE 10
 #define UPGRADED_MOB_DAMAGE 20
 
+#define COIN_ON_MAP -10
+#define SPIKY_BALL_ON_MAP -11
+#define BASIC_MOB_ON_MAP -12
+#define UPGRADED_MOB_ON_MAP -13
 
-#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 6
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 7
 #define NUMBER_OF_SPIKED_BALLS_LEVEL_2 10
 #define NUMBER_OF_SPIKED_BALLS_LEVEL_3 12
 
@@ -58,9 +62,9 @@
 #define LEVEL_2 2
 #define LEVEL_3 3
 
-#define NUMBER_OF_GOLD_COINS_LEVEL1 5
-#define NUMBER_OF_GOLD_COINS_LEVEL2 6
-#define NUMBER_OF_GOLD_COINS_LEVEL3 7
+#define NUMBER_OF_GOLD_COINS_LEVEL1 1
+#define NUMBER_OF_GOLD_COINS_LEVEL2 1
+#define NUMBER_OF_GOLD_COINS_LEVEL3 1
 
 #define STARTING_X_POS 2
 #define STARTING_Y_POS 2
