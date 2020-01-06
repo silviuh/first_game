@@ -201,7 +201,7 @@ void Game::update() {
 	this->updateCounter++;
 	mainPlayer->update();
 	
-	Game::trapsManager(SpikedTrapArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+	Game::trapsManager(SpikedTrapArray, MobsArray,  mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	Game::mobsManager(MobsArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer, SpikedTrapArray);
 	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 
@@ -394,12 +394,24 @@ void Game::coinsManager(vector <GoldCoin*>& goldCoinArr, const int heroX, const 
 }
 
 
-void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, const int heroX, const int heroY, Component& mainPlayer) {
+void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer) {
 	for (int i = 0; i < SpikedTrapArray.size(); i++) {
 		if (SpikedTrapArray.at(i)->getYpos() == heroY and SpikedTrapArray.at(i)->getXpos() == heroX) {
 			mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
 			delete SpikedTrapArray.at(i);
 			SpikedTrapArray.erase(SpikedTrapArray.begin() + i);
+		}
+		for (int j = 0; j < mobsArray.size(); j++) {
+			if (SpikedTrapArray.at(i)->getXpos() == mobsArray.at(j)->getXpos() and SpikedTrapArray.at(i)->getYpos() == mobsArray.at(j)->getYpos()) {
+				mobsArray.at(j)->decreaseHealth(SPIKED_BALL_DAMAGE);
+				delete SpikedTrapArray.at(i);
+				SpikedTrapArray.erase(SpikedTrapArray.begin() + i);
+
+				if (mobsArray.at(j)->getCurrentLife() <= 0) {
+					delete mobsArray.at(j);
+					mobsArray.erase(mobsArray.begin() + j);
+				}
+			}
 		}
 	}
 }
@@ -409,17 +421,6 @@ void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const i
 	for (int i = 0; i < mobsArray.size(); i++) {
 		if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
 			mainPlayer.decreaseHealth(10);
-		}
-
-		else {
-			for (int j = 0; j < SpikedTrapArray.size(); j++) {
-				if (mobsArray.at(i)->getXpos() == SpikedTrapArray.at(j)->getXpos() and mobsArray.at(i)->getYpos() == SpikedTrapArray.at(j)->getYpos()) 
-					mobsArray.at(i)->decreaseHealth(SPIKED_BALL_DAMAGE);
-				if (mobsArray.at(i)->getCurrentLife() <= 0) {
-					delete mobsArray.at(i);
-					mobsArray.erase(mobsArray.begin() + i);
-				}
-			}
 		}
 	}
 }

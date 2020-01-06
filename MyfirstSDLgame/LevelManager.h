@@ -21,5 +21,7 @@ public:
 
 	Game* loadNextLevel();
 	bool permissionForNextLevel[2];
+
+	static void levelLoadScreen(int currentLevel);
 };
 

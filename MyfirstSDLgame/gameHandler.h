@@ -93,7 +93,7 @@ public:
 
 	static pair<int, int> returnHeroCoordinates(Component* hero);
 	static void coinsManager(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
-	static void trapsManager(vector <SpikedTrap*> &, const int heroX, const int heroY, Component& mainPlayer);
+	static void trapsManager(vector <SpikedTrap*> &, vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer);
 	static void mobsManager(vector <Component*> &, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray);
 
 	static void renderScore(const int currentScore);
