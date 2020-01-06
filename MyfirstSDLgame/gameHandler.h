@@ -24,6 +24,7 @@ using namespace std;
 
 class Component;
 class Mob;
+class UpgradedMobs;
 class Hero;
 class Map;
 class Menu;

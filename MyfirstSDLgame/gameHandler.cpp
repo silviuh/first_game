@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "Hero.h"
 #include "Mob.h"
+#include "UpgradedMobs.h"
 #include "GoldCoin.h"
 #include "SpikedTrap.h"
 #include "TextureManager.h"
@@ -117,7 +118,7 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfUpgradedMobs; i++) {
 		pair<int, int> tempPair = upgradedMobList.at(i);
-		Component* newUpgradedMob = new  Mob(MOB_LVL_2, tempPair.first, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer, BASIC_MOB_DAMAGE);
+		Component* newUpgradedMob = new UpgradedMobs(MOB_LVL_2, tempPair.first, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer, UPGRADED_MOB_DAMAGE);
 		MobsArray.push_back(newUpgradedMob);
 		mapBluePrint[tempPair.first][tempPair.second] = UPGRADED_MOB_ON_MAP;
 	}

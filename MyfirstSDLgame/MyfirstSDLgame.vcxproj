@@ -150,6 +150,7 @@
     <ClCompile Include="SpikedTrap.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="Trap.cpp" />
+    <ClCompile Include="UpgradedMobs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="SpikedTrap.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Trap.h" />
+    <ClInclude Include="UpgradedMobs.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
