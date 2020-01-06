@@ -11,6 +11,7 @@ private:
 	int motionFlag;*/
 	int health;
 	Component* heroRefference;
+	int mobDamage;
 	int heroX, heroY; // used to find the current hero location on the tile map
 
 public:
@@ -18,7 +19,7 @@ public:
 	int mobIndex;
 
 
-	Mob(const char* filePath, int xPos, int yPos, int health, Component* hero);
+	Mob(const char* filePath, int xPos, int yPos, int health, Component* hero, int mobDMG);
 
 	~Mob() {
 		//delete myQueue;
@@ -31,7 +32,10 @@ public:
 		motionFlag = -motionFlag;
 	}
 	*/
-
+	
+	void decreaseHealth(int damage) override {
+		health -= damage;
+	}
 	void update() override;
 	void resetLee(const int newRow, const int newColumn) {}
 	int getCurrentLife() override {

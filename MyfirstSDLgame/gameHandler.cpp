@@ -102,7 +102,7 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfBasicMobs; i++) {
 		pair<int, int> tempPair = basicMobList.at(i);
-		Component* newBasicMob = new  Mob(MOB_LVL_1, tempPair.first, tempPair.second, BASIC_MOB_HEALTH, mainPlayer);
+		Component* newBasicMob = new  Mob(MOB_LVL_1, tempPair.first, tempPair.second, BASIC_MOB_HEALTH, mainPlayer, BASIC_MOB_DAMAGE);
 		MobsArray.push_back(newBasicMob);
 		mapBluePrint[tempPair.first][tempPair.second] = BASIC_MOB_ON_MAP;
 	}
@@ -117,7 +117,7 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 
 	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfUpgradedMobs; i++) {
 		pair<int, int> tempPair = upgradedMobList.at(i);
-		Component* newUpgradedMob = new  Mob(MOB_LVL_2, tempPair.first, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer);
+		Component* newUpgradedMob = new  Mob(MOB_LVL_2, tempPair.first, tempPair.first, UPGRADED_MOB_HEALTH, mainPlayer, BASIC_MOB_DAMAGE);
 		MobsArray.push_back(newUpgradedMob);
 		mapBluePrint[tempPair.first][tempPair.second] = UPGRADED_MOB_ON_MAP;
 	}
@@ -236,18 +236,21 @@ pair<int, int> Game::render() {
 	dr2.x = dr2.y = 96;
 
 	if (false != SDL_RenderClear(renderer)) {
-		return make_pair (_SDL_RenderClear, SCORE_NOT_INITIALISED);
+		return make_pair(_SDL_RenderClear, SCORE_NOT_INITIALISED);
 	}
 
 	levelMap->DrawMap();
 	mainPlayer->render();
 
 	for (int i = 0; i < SpikedTrapArray.size(); i++) {
-		SpikedTrapArray.at(i)->render();
+		if (SpikedTrapArray.at(i)->isComponentActive())
+			SpikedTrapArray.at(i)->render();
 	}
-	
-	for (int i = 0; i < MobsArray.size(); i++)
-		MobsArray.at(i)->render();
+
+	for (int i = 0; i < MobsArray.size(); i++) {
+		if (MobsArray.at(i)->isComponentActive())
+			MobsArray.at(i)->render();
+	}
 
 	for (int i = 0; i < GoldCoinArray.size(); i++) {
 		GoldCoinArray.at(i)->render();
@@ -396,32 +399,37 @@ void Game::coinsManager(vector <GoldCoin*>& goldCoinArr, const int heroX, const 
 
 void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer) {
 	for (int i = 0; i < SpikedTrapArray.size(); i++) {
-		if (SpikedTrapArray.at(i)->getYpos() == heroY and SpikedTrapArray.at(i)->getXpos() == heroX) {
-			mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
-			delete SpikedTrapArray.at(i);
-			SpikedTrapArray.erase(SpikedTrapArray.begin() + i);
+		if (SpikedTrapArray.at(i)->isComponentActive()) {
+			if (SpikedTrapArray.at(i)->getYpos() == heroY and SpikedTrapArray.at(i)->getXpos() == heroX) {
+				mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
+				SpikedTrapArray.at(i)->makeComponentInactive();
+			}
 		}
-		for (int j = 0; j < mobsArray.size(); j++) {
-			if (SpikedTrapArray.at(i)->getXpos() == mobsArray.at(j)->getXpos() and SpikedTrapArray.at(i)->getYpos() == mobsArray.at(j)->getYpos()) {
-				mobsArray.at(j)->decreaseHealth(SPIKED_BALL_DAMAGE);
-				delete SpikedTrapArray.at(i);
-				SpikedTrapArray.erase(SpikedTrapArray.begin() + i);
 
-				if (mobsArray.at(j)->getCurrentLife() <= 0) {
-					delete mobsArray.at(j);
-					mobsArray.erase(mobsArray.begin() + j);
+		for (int i = 0; i < SpikedTrapArray.size(); i++)
+			if(SpikedTrapArray.at(i)->isComponentActive()){
+				for (int j = 0; j < mobsArray.size(); j++) {
+					if (mobsArray.at(j)->isComponentActive()) {
+						if (SpikedTrapArray.at(i)->getXpos() == mobsArray.at(j)->getXpos() and SpikedTrapArray.at(i)->getYpos() == mobsArray.at(j)->getYpos()) {
+							mobsArray.at(j)->decreaseHealth(SPIKED_BALL_DAMAGE);
+							SpikedTrapArray.at(i)->makeComponentInactive();
+							if(mobsArray.at(j)->getCurrentLife() <= 0)
+								mobsArray.at(j)->makeComponentInactive();
+						}
+					}
 				}
 			}
 		}
-	}
 }
+
 
 // ! also mobs may die if they hit a spiky ball
 void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray) {
 	for (int i = 0; i < mobsArray.size(); i++) {
-		if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
-			mainPlayer.decreaseHealth(10);
-		}
+		if (mobsArray.at(i)->isComponentActive())
+			if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
+				mainPlayer.decreaseHealth(BASIC_MOB_DAMAGE);
+			}
 	}
 }
 

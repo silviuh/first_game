@@ -12,6 +12,8 @@ protected:
 	SDL_Rect sourceRectangle, destinationRectangle;
 	int direction;
 
+	bool isActive;
+
 public:
 
 	int getXpos() const {
@@ -47,4 +49,10 @@ public:
 	virtual void resetLee(const int, const int) = 0;
 	virtual void increaseScore(int number) {}
 	virtual void decreaseHealth(int damage) {}
+	void makeComponentInactive() {
+		isActive = false;
+	}
+	bool isComponentActive() {
+		return isActive;
+	}
 };

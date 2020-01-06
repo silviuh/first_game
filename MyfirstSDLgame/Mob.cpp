@@ -8,7 +8,7 @@
 //	motionFlag = -motionFlag;
 //}
 
-Mob::Mob(const char* filePath, int xPos, int yPos, int health, Component* hero) : Component(filePath, xPos, yPos, health) {
+Mob::Mob(const char* filePath, int xPos, int yPos, int health, Component* hero, int mobDMG) : Component(filePath, xPos, yPos, health) {
 	//motionFlag = -1;
 	//myQueue = new queue <pair<int, int>>(); // queue init
 	//myQueue->push(make_pair(xPos, yPos));
@@ -18,6 +18,7 @@ Mob::Mob(const char* filePath, int xPos, int yPos, int health, Component* hero) 
 		for (int j = 0; j < _Y_MAP_BOUND; j++)
 			Visited[i][j] = Game::level1Map->accesMapCoordinates(i, j);*/
 	
+	mobDamage = mobDMG;
 	this->health = health;
 	heroRefference = hero;
 	mobCounter++;

@@ -14,6 +14,7 @@ Component::Component(const char* imageToLoad, int xPos, int yPos, int health) {
 	destinationRectangle.h = SCALESIZE;
 	destinationRectangle.x = 0;
 	destinationRectangle.y = 0;
+	isActive = true;
 }
 
 Component::~Component() {
