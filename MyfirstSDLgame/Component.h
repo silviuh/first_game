@@ -55,4 +55,9 @@ public:
 	bool isComponentActive() {
 		return isActive;
 	}
+
+	virtual bool playerIsInVision(int givenDistance){
+		return true;
+	}
+
 };

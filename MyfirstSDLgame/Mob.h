@@ -5,7 +5,7 @@
 
 
 class Mob : public Component{
-private:
+protected:
 	/*queue <pair<int, int>>* myQueue;
 	int Visited[_X_MAP_BOUND][_Y_MAP_BOUND];
 	int motionFlag;*/
@@ -41,6 +41,9 @@ public:
 	int getCurrentLife() override {
 		return health;
 	}
+
+	bool playerIsInVision(int givenDistance);
+
 
 	static bool raceCondition(const int givenRow, const int givenColumn) {}
 	static int mobCounter;

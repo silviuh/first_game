@@ -26,31 +26,33 @@ Mob::Mob(const char* filePath, int xPos, int yPos, int health, Component* hero, 
 }
 
 void Mob::update() {
-	int heroX = heroRefference->getXpos();
-	int heroY = heroRefference->getYpos();
+	if (playerIsInVision(BASIC_MOBS_VISION)) {
+		int heroX = heroRefference->getXpos();
+		int heroY = heroRefference->getYpos();
 
-	int newX = xPos;
-	int newY = yPos;
+		int newX = xPos;
+		int newY = yPos;
 
-	if (xPos <= heroX) {
-		newX++;
-	}
-	if (xPos >= heroX) {
-		newX--;
-	}
-	if (yPos >= heroY) {
-		newY--;
-	}
-	if (yPos <= heroY) {
-		newY++;
-	}
+		if (xPos <= heroX) {
+			newX++;
+		}
+		if (xPos >= heroX) {
+			newX--;
+		}
+		if (yPos >= heroY) {
+			newY--;
+		}
+		if (yPos <= heroY) {
+			newY++;
+		}
 
 
-	if (Game::levelMap->Collision(newX, newY) != true) {
-		xPos = newX;
-		yPos = newY;
-		destinationRectangle.x = newX * SCALESIZE;
-		destinationRectangle.y = newY * SCALESIZE;
+		if (Game::levelMap->Collision(newX, newY) != true) {
+			xPos = newX;
+			yPos = newY;
+			destinationRectangle.x = newX * SCALESIZE;
+			destinationRectangle.y = newY * SCALESIZE;
+		}
 	}
 }
 
@@ -115,3 +117,12 @@ void Mob::update() {
 	myQueue->push(make_pair(this->xPos, this->yPos));
 }
 */
+
+bool Mob::playerIsInVision(int givenDistance) {
+	int playerX = heroRefference->getXpos();
+	int playerY = heroRefference->getYpos();
+	int dx = abs(playerX - this->xPos);
+	int dy = abs(playerY - this->yPos);
+	bool inVision = sqrt(dx * dx + dy * dy) <= givenDistance;
+	return inVision;
+}

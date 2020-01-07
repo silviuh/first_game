@@ -427,7 +427,7 @@ void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, vector <Componen
 // ! also mobs may die if they hit a spiky ball
 void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray) {
 	for (int i = 0; i < mobsArray.size(); i++) {
-		if (mobsArray.at(i)->isComponentActive())
+		if (mobsArray.at(i)->isComponentActive() and mobsArray.at(i)->playerIsInVision(10))
 			if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
 				mainPlayer.decreaseHealth(BASIC_MOB_DAMAGE);
 			}

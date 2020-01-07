@@ -27,9 +27,9 @@
 #define BASIC_MOB_ON_MAP -12
 #define UPGRADED_MOB_ON_MAP -13
 
-#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 60
-#define NUMBER_OF_SPIKED_BALLS_LEVEL_2 10
-#define NUMBER_OF_SPIKED_BALLS_LEVEL_3 12
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_1 12
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_2 13
+#define NUMBER_OF_SPIKED_BALLS_LEVEL_3 14
 
 #define UNDEFINED_LIFE -1;
 #define PLAYER_IS_DEAD 99
@@ -39,22 +39,25 @@
 #define BASIC_MOB_HEALTH 50
 #define UPGRADED_MOB_HEALTH 60
 
-#define NUMBER_OF_MOBS_LEVEL_1 5
-#define NUMBER_OF_MOBS_LEVEL_2 7
-#define NUMBER_OF_MOBS_LEVEL_3 9
+#define NUMBER_OF_MOBS_LEVEL_1 10
+#define NUMBER_OF_MOBS_LEVEL_2 10
+#define NUMBER_OF_MOBS_LEVEL_3 14
 
-#define NUMBER_OF_BASIC_MOBS_LEVEL_1 5
-#define NUMBER_OF_BASIC_MOBS_LEVEL_2 3
-#define NUMBER_OF_BASIC_MOBS_LEVEL_3 1
+#define NUMBER_OF_BASIC_MOBS_LEVEL_1 10
+#define NUMBER_OF_BASIC_MOBS_LEVEL_2 4
+#define NUMBER_OF_BASIC_MOBS_LEVEL_3 0
 
 #define NUMBER_OF_UPGRADED_MOBS_LEVEL_1 0
-#define NUMBER_OF_UPGRADED_MOBS_LEVEL_2 4
-#define NUMBER_OF_UPGRADED_MOBS_LEVEL_3 8
+#define NUMBER_OF_UPGRADED_MOBS_LEVEL_2 6
+#define NUMBER_OF_UPGRADED_MOBS_LEVEL_3 14
+
+#define BASIC_MOBS_VISION 6
+#define UPGRADED_MOBS_VISION 9
 
 #define ZERO_UPGRADED_MOBS 0
 #define ZERO_BASIC_MOBS 0
 
-#define BASIC_MOBS_MOVEMENT_PERIOD 4
+#define BASIC_MOBS_MOVEMENT_PERIOD 3
 #define UPGRADED_MOBS_MOVEMENT_PERIOD 2
 #define NO_COINS_LEFT 0
 
@@ -62,9 +65,9 @@
 #define LEVEL_2 2
 #define LEVEL_3 3
 
-#define NUMBER_OF_GOLD_COINS_LEVEL1 1
-#define NUMBER_OF_GOLD_COINS_LEVEL2 1
-#define NUMBER_OF_GOLD_COINS_LEVEL3 1
+#define NUMBER_OF_GOLD_COINS_LEVEL1 4
+#define NUMBER_OF_GOLD_COINS_LEVEL2 5
+#define NUMBER_OF_GOLD_COINS_LEVEL3 6
 
 #define STARTING_X_POS 2
 #define STARTING_Y_POS 2
@@ -99,7 +102,8 @@ const int goldCoinsPerLevel[3][2] = {
 #define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define HERO_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\king2.png"
 
-#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
+//#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
+#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\bossmobs\\1.png"
 #define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png"
 
 #define ARCHERY_BLACK "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\archeryBlack.ttf"
