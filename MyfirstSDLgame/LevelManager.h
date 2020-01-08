@@ -10,6 +10,8 @@ private:
 	Game* gameHandlerReference;
 
 public:
+
+	bool endGameWithVictoryFlag;
 	LevelManager(Game* gameHandler);
 	~LevelManager();
 	
@@ -26,5 +28,8 @@ public:
 	}
 
 	static void levelLoadScreen(int currentLevel);
+
+	void loadFinalScreen();
+
 };
 

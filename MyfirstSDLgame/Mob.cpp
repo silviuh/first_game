@@ -26,12 +26,11 @@ Mob::Mob(const char* filePath, int xPos, int yPos, int health, Component* hero, 
 }
 
 void Mob::update() {
+	int newX = xPos, newY = yPos;
+
 	if (playerIsInVision(BASIC_MOBS_VISION)) {
 		int heroX = heroRefference->getXpos();
 		int heroY = heroRefference->getYpos();
-
-		int newX = xPos;
-		int newY = yPos;
 
 		if (xPos <= heroX) {
 			newX++;
@@ -45,15 +44,15 @@ void Mob::update() {
 		if (yPos <= heroY) {
 			newY++;
 		}
-
-
-		if (Game::levelMap->Collision(newX, newY) != true) {
-			xPos = newX;
-			yPos = newY;
-			destinationRectangle.x = newX * SCALESIZE;
-			destinationRectangle.y = newY * SCALESIZE;
-		}
 	}
+
+	if (Game::levelMap->Collision(newX, newY) != true) {
+		xPos = newX;
+		yPos = newY;
+		destinationRectangle.x = newX * SCALESIZE;
+		destinationRectangle.y = newY * SCALESIZE;
+	}
+
 }
 
 /*bool Mob::raceCondition(const int givenRow, const int givenColumn) {

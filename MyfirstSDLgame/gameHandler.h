@@ -30,6 +30,8 @@ class Map;
 class Menu;
 class GoldCoin;
 class SpikedTrap;
+class HeartBonus;
+
 
 typedef unsigned int Level;
 struct levelSpecificDataContainer;
@@ -42,6 +44,7 @@ private:
 	vector <GoldCoin*> GoldCoinArray;
 	vector <SpikedTrap*> SpikedTrapArray;
 	vector <Component*> MobsArray;
+	vector <HeartBonus*> heartsArray;
 
 	int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND];
 
@@ -96,6 +99,8 @@ public:
 	static void coinsManager(vector <GoldCoin*> &, const int heroX, const int heroY, Component& mainPlayer);
 	static void trapsManager(vector <SpikedTrap*> &, vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer);
 	static void mobsManager(vector <Component*> &, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray);
+	static void heartBonuses(vector <HeartBonus*> &, const int heroX, const int heroY);
+
 
 	static void renderScore(const int currentScore);
 	static void renderLife(const int currentLife);
@@ -116,5 +121,6 @@ struct levelSpecificDataContainer{
 	int numberOfMobs;
 	int numberOfBasicMobs;
 	int numberOfUpgradedMobs;
+	int numberOfHeartsPerLevel;
 	string mapFilePath;
 };

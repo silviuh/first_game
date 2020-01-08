@@ -56,7 +56,7 @@ int main(int argc, char* args[])
 
 
 	if (mainMenu->returnRequestForExitingTheGame() == false) {
-		GamePlayLabel:
+	GamePlayLabel:
 		while (true == game->gameIsRunning()) {
 
 			frameStart = SDL_GetTicks();
@@ -71,6 +71,7 @@ int main(int argc, char* args[])
 			if (playerStatus.first == PLAYER_IS_DEAD) {
 				totalScore += playerStatus.second;
 				Menu* endGameMenu = endGameMenuInit(totalScore, game->currentLevel);
+				endGameMenu->showMessageWhenPlayerDies = true;
 
 				while (endGameMenu->menuIsActive() == true) {
 					frameStart = SDL_GetTicks();
@@ -78,7 +79,7 @@ int main(int argc, char* args[])
 					endGameMenu->drawMenu();
 					endGameMenu->handleEvents();
 
-					switch (endGameMenu->optionsFlag){
+					switch (endGameMenu->optionsFlag) {
 					case RESTART_GAME_FLAG:
 						goto GamePlayLabel;
 						break;
@@ -91,7 +92,7 @@ int main(int argc, char* args[])
 					default:
 						break;
 					}
-					
+
 					frameTime = SDL_GetTicks() - frameStart;
 
 					if (frameDelay > frameTime) {
@@ -99,10 +100,43 @@ int main(int argc, char* args[])
 					}
 				}
 			}
+
 			else if (playerStatus.first == PLAYER_WON_THE_LEVEL) {
 				gameLevelManager->getCurrentScoreOnLevelSucces(playerStatus.second);
 				totalScore += playerStatus.second;
 				game = gameLevelManager->loadNextLevel();
+
+			}
+			/*if (gameLevelManager->endGameWithVictoryFlag == true) {
+				//game->switchOffGameLoop();
+				Menu* endGameMenu = endGameMenuInit(totalScore, game->currentLevel);
+
+				while (endGameMenu->menuIsActive() == true) {
+					frameStart = SDL_GetTicks();
+
+					endGameMenu->drawMenu();
+					endGameMenu->handleEvents();
+
+					switch (endGameMenu->optionsFlag) {
+					case RESTART_GAME_FLAG:
+						goto GamePlayLabel;
+						break;
+					case BACK_TO_MY_MENU_FLAG:
+						goto MainMenuLabel;dddddsss
+						break;
+					case QUIT_GAME_FLAG:
+						cout << "\n You exited the game!";
+						break;
+					default:
+						break;
+					}
+
+					frameTime = SDL_GetTicks() - frameStart;
+
+					if (frameDelay > frameTime) {
+						SDL_Delay(frameDelay - frameTime);
+					}
+				}
 				goto GamePlayLabel;
 			}
 
@@ -114,9 +148,11 @@ int main(int argc, char* args[])
 			if (frameDelay > frameTime) {
 				SDL_Delay(frameDelay - frameTime);
 			}
+
+		}
+		*/
 		}
 	}
-	
 	
 	delete mainMenu;
 	delete endGameMenu;

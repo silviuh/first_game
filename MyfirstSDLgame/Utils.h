@@ -26,6 +26,9 @@
 #define SPIKY_BALL_ON_MAP -11
 #define BASIC_MOB_ON_MAP -12
 #define UPGRADED_MOB_ON_MAP -13
+#define HEART_ON_MAP - 14
+
+#define LIFE_BONUS 50
 
 #define NUMBER_OF_SPIKED_BALLS_LEVEL_1 12
 #define NUMBER_OF_SPIKED_BALLS_LEVEL_2 13
@@ -65,9 +68,15 @@
 #define LEVEL_2 2
 #define LEVEL_3 3
 
-#define NUMBER_OF_GOLD_COINS_LEVEL1 4
-#define NUMBER_OF_GOLD_COINS_LEVEL2 5
-#define NUMBER_OF_GOLD_COINS_LEVEL3 6
+#define NUMBER_OF_GOLD_COINS_LEVEL1 1
+#define NUMBER_OF_GOLD_COINS_LEVEL2 1
+#define NUMBER_OF_GOLD_COINS_LEVEL3 1
+
+#define NUMBER_OF_HEARTS_LEVEL_1 1
+#define NUMBER_OF_HEARTS_LEVEL_2 2
+#define NUMBER_OF_HEARTS_LEVEL_3 3
+
+#define MAX_HERO_HEALTH 100
 
 #define STARTING_X_POS 2
 #define STARTING_Y_POS 2
@@ -102,9 +111,12 @@ const int goldCoinsPerLevel[3][2] = {
 #define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define HERO_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\king2.png"
 
-//#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
-#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\bossmobs\\1.png"
+#define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png"
+
+#define LIFE_BONUS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\lifeBonus.png"
+
+
 
 #define ARCHERY_BLACK "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\archeryBlack.ttf"
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"

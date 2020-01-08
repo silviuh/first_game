@@ -25,6 +25,7 @@ protected:
 
 public:
 	int optionsFlag;
+	bool showMessageWhenPlayerDies;
 
 	Menu(int width, int height, point location, const std::vector<menuItem> &options);
 	~Menu();

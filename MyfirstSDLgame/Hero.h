@@ -30,4 +30,7 @@ public:
 	void update();
 	void increaseScore(int number);
 	void decreaseHealth(int damage);
+	void increaseHealth(int givenHealth) {
+		health += givenHealth;
+	}
 };

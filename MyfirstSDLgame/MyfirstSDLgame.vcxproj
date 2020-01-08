@@ -141,6 +141,7 @@
     <ClCompile Include="EndGameMenu.cpp" />
     <ClCompile Include="gameHandler.cpp" />
     <ClCompile Include="GoldCoin.cpp" />
+    <ClCompile Include="HeartBonus.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="EndGameMenu.h" />
     <ClInclude Include="gameHandler.h" />
     <ClInclude Include="GoldCoin.h" />
+    <ClInclude Include="HeartBonus.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Map.h" />

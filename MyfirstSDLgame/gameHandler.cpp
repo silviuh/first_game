@@ -8,6 +8,7 @@
 #include "GoldCoin.h"
 #include "SpikedTrap.h"
 #include "TextureManager.h"
+#include "HeartBonus.h"
 #include "Map.h"
 
 
@@ -80,6 +81,19 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 
 
 
+	vector <pair<int, int>> heartList;
+	generateRandomCoordinates(heartList, mainPlayer,
+		Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfHeartsPerLevel,
+		mapBluePrint, levelMap);
+
+	for (int i = 0; i < Game::storageContainerForLevels.at(currentLevel - 1).second.numberOfHeartsPerLevel; i++) {
+		pair<int, int> tempPair = heartList.at(i);
+		HeartBonus* newHeartBonus = new HeartBonus(LIFE_BONUS_PNG, tempPair.first, tempPair.second, 0, LIFE_BONUS, mainPlayer);
+		heartsArray.push_back(newHeartBonus);
+		mapBluePrint[tempPair.first][tempPair.second] = HEART_ON_MAP;
+	}
+
+
 
 	vector <pair <int, int>> spikeyBallList;
 	generateRandomCoordinates(spikeyBallList, mainPlayer,
@@ -134,7 +148,7 @@ void Game::handleEvents() {
 			this->isRunning = false;
 			break;
 		}
-
+					   
 		case SDL_KEYDOWN: {
 			switch (event.key.keysym.sym) {
 			case SDLK_w:
@@ -205,6 +219,7 @@ void Game::update() {
 	Game::trapsManager(SpikedTrapArray, MobsArray,  mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
 	Game::mobsManager(MobsArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer, SpikedTrapArray);
 	Game::coinsManager(GoldCoinArray, mainPlayer->getXpos(), mainPlayer->getYpos(), *mainPlayer);
+	Game::heartBonuses(heartsArray, mainPlayer->getXpos(), mainPlayer->getYpos());
 
 	Mob::movementTime++;
 
@@ -219,6 +234,8 @@ void Game::update() {
 			MobsArray.at(i)->update();
 		}
 	}
+
+
 
 }
 
@@ -255,6 +272,11 @@ pair<int, int> Game::render() {
 
 	for (int i = 0; i < GoldCoinArray.size(); i++) {
 		GoldCoinArray.at(i)->render();
+	}
+
+	for (int i = 0; i < heartsArray.size(); i++) {
+		if (heartsArray.at(i)->isComponentActive())
+			heartsArray.at(i)->render();
 	}
 
 	Game::renderScore(mainPlayer->getCurrentScore());
@@ -434,6 +456,17 @@ void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const i
 	}
 }
 
+
+void Game::heartBonuses(vector <HeartBonus*> & heartArr, const int heroX, const int heroY) {
+	for (int i = 0; i < heartArr.size(); i++) {
+		if (heartArr.at(i)->isComponentActive())
+			if (heartArr.at(i)->getYpos() == heroY and heartArr.at(i)->getXpos() == heroX) {
+				heartArr.at(i)->HeroGetsBonus();
+				heartArr.at(i)->makeComponentInactive();
+			}
+	}
+}
+
 void Game::renderScore(const int currentScore) {
 	string textToDisplay = "CURRENT SCORE: " + to_string(currentScore);
 	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
@@ -490,6 +523,7 @@ void Game::initializeStorageContainerForLevels(vector < pair<Level, levelSpecifi
 	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_1;
 	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_1;
 	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_1;
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_1;
 	givenVector.push_back(make_pair(LEVEL_1, genericLevel));
 
 	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_2;
@@ -498,14 +532,17 @@ void Game::initializeStorageContainerForLevels(vector < pair<Level, levelSpecifi
 	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_2;
 	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_2;
 	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_2;
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_2;
 	givenVector.push_back(make_pair(LEVEL_2, genericLevel));
 
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_1;
 	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_3;
 	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_3;
 	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL3;
 	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_3;
 	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_3;
 	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_3;
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_3;
 	givenVector.push_back(make_pair(LEVEL_3, genericLevel));
 
 }

@@ -8,10 +8,12 @@ private:
 
 
 public:
+
 	EndGameMenu(int width, int height, point location, const std::vector<menuItem> &options, const int PlayerScore, const int levelReached) :
 		Menu(width, height, location, options) {
 		mainPlayerScore = PlayerScore;
 		currentLevel = levelReached;
+		showMessageWhenPlayerDies = false;
 	}
 	void drawMenu() override;
 

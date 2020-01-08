@@ -49,6 +49,7 @@ public:
 	virtual void resetLee(const int, const int) = 0;
 	virtual void increaseScore(int number) {}
 	virtual void decreaseHealth(int damage) {}
+	virtual void increaseHealth(int givenHealth){}
 	void makeComponentInactive() {
 		isActive = false;
 	}
