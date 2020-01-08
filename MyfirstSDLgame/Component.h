@@ -11,10 +11,12 @@ protected:
 	SDL_Texture* objTexture;
 	SDL_Rect sourceRectangle, destinationRectangle;
 	int direction;
-
+	int abilityColdown;
+	bool abilityCanBeCasted;
 	bool isActive;
 
 public:
+	
 
 	int getXpos() const {
 		return xPos;
@@ -50,6 +52,14 @@ public:
 	virtual void increaseScore(int number) {}
 	virtual void decreaseHealth(int damage) {}
 	virtual void increaseHealth(int givenHealth){}
+	virtual void toogleOffAbility(){}
+	virtual void toogleOnAbility() {}
+	virtual void reduceAbilityColdown() {}
+	virtual void setAbilityColdown() {}
+	virtual void toogleAbilityCanBeCastedFlag() {}
+	virtual int getAbilityColdown() {
+		return abilityColdown;
+	}
 	void makeComponentInactive() {
 		isActive = false;
 	}

@@ -60,6 +60,12 @@
     <ClCompile Include="HeartBonus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpecializedHeroClassVoidWalker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecializedHeroKnight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameHandler.h">
@@ -105,6 +111,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HeartBonus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecializedHeroClassVoidWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecializedHeroKnight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

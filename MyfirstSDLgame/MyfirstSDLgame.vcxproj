@@ -148,6 +148,8 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mob.cpp" />
+    <ClCompile Include="SpecializedHeroClassVoidWalker.cpp" />
+    <ClCompile Include="SpecializedHeroKnight.cpp" />
     <ClCompile Include="SpikedTrap.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="Trap.cpp" />
@@ -164,6 +166,8 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mob.h" />
+    <ClInclude Include="SpecializedHeroClassVoidWalker.h" />
+    <ClInclude Include="SpecializedHeroKnight.h" />
     <ClInclude Include="SpikedTrap.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Trap.h" />

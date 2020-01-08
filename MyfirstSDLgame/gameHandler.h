@@ -31,7 +31,7 @@ class Menu;
 class GoldCoin;
 class SpikedTrap;
 class HeartBonus;
-
+class SpecializedHeroClassVoidWalker;
 
 typedef unsigned int Level;
 struct levelSpecificDataContainer;
@@ -52,6 +52,7 @@ private:
 	int numberOfGoldCoins;
 	const Uint8* keyStates;
 	int gameHandler;
+	int voidHoleColdown;
 
 	bool isRunning;
 	SDL_Window *window;
@@ -104,6 +105,7 @@ public:
 
 	static void renderScore(const int currentScore);
 	static void renderLife(const int currentLife);
+	static void renderVoidHole(Component* hero);
 	static void renderCurrentLevelNumber(const int currentLevel);
 	static void initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > &);
 	

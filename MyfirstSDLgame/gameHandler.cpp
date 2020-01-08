@@ -3,6 +3,7 @@
 #include "Menu.h"
 #include "Utils.h"
 #include "Hero.h"
+#include "SpecializedHeroClassVoidWalker.h"
 #include "Mob.h"
 #include "UpgradedMobs.h"
 #include "GoldCoin.h"
@@ -23,6 +24,7 @@ Game ::Game() {
 	this->isRunning = false;
 	this->window = nullptr;
 	srand(time(NULL));
+	voidHoleColdown = 0;
 }
 
 Game::~Game() {
@@ -61,7 +63,8 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 
 	currentLevel = currentLevelInGame;
 	levelMap = new Map();
-	mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
+	//mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
+	mainPlayer = new SpecializedHeroClassVoidWalker(VOID_WALKER_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
 
 	levelMap->LoadMap(Game::storageContainerForLevels.at(currentLevel - 1).second.mapFilePath);
 	generateBluePrintMap();
@@ -171,6 +174,8 @@ void Game::handleEvents() {
 				cout << "a key pressed";
 				cout << endl;
 				break;
+			case SDLK_SPACE:
+				mainPlayer->toogleOnAbility();
 			}
 			break;
 		}
@@ -236,7 +241,12 @@ void Game::update() {
 	}
 
 
+	if (mainPlayer->getAbilityColdown() > 0) {
+		mainPlayer->reduceAbilityColdown();
+	}
 
+	if (mainPlayer->getAbilityColdown() == 0)
+		mainPlayer->toogleAbilityCanBeCastedFlag();
 }
 
 
@@ -291,6 +301,10 @@ pair<int, int> Game::render() {
 	if (GoldCoinArray.size() == NO_COINS_LEFT)
 		return make_pair(PLAYER_WON_THE_LEVEL, mainPlayer->getCurrentScore());
 
+	/*if (typeid(*mainPlayer).name() == "SpecializedHeroClassVoidWalker") {
+		renderVoidHole(mainPlayer);
+	}
+*/
 	return make_pair(_RENDERINGSUCCES, SCORE_NOT_INITIALISED);
 } 
 
@@ -513,6 +527,17 @@ void Game::renderCurrentLevelNumber(const int currentLevel) {
 	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 }
 
+
+void Game::renderVoidHole(Component* hero) {
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = hero->getXpos();
+	blittingRectangle.y = hero->getYpos();
+	blittingRectangle.h = SCALESIZE;
+	blittingRectangle.w = SCALESIZE;
+	SDL_Texture* voidHoleTexture = textureManager::loadTexture(VOID_HOLE_PNG);
+	SDL_RenderCopy(Game::renderer, voidHoleTexture, nullptr, &blittingRectangle);
+}
 
 void Game::initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > & givenVector) {
 	levelSpecificDataContainer genericLevel;

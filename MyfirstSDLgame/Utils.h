@@ -81,6 +81,8 @@
 #define STARTING_X_POS 2
 #define STARTING_Y_POS 2
 
+#define VOID_HOLE_COLDOWN 10
+
 enum GOLD_COINS_LEVEL {
 	GOLD_COINS_LEVEL1 = 1,
 	GOLD_COINS_LEVEL2,
@@ -110,12 +112,13 @@ const int goldCoinsPerLevel[3][2] = {
 
 #define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define HERO_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\king2.png"
+#define VOID_WALKER_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\voidWalker.png"
 
 #define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png"
 
 #define LIFE_BONUS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\lifeBonus.png"
-
+#define VOID_HOLE_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\blackHole.png"
 
 
 #define ARCHERY_BLACK "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\archeryBlack.ttf"

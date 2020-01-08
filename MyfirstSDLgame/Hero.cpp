@@ -23,6 +23,8 @@ void Hero::update() {
 		break;
 	case UNSET:
 		didNotMove = true;
+		destinationRectangle.y = this->yPos * SCALESIZE;
+		destinationRectangle.x = this->xPos * SCALESIZE;
 		break;
 	}
 
