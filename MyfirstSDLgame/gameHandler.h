@@ -32,6 +32,8 @@ class GoldCoin;
 class SpikedTrap;
 class HeartBonus;
 class SpecializedHeroClassVoidWalker;
+class SpecializedHeroClassMage;
+class SpecializedHeroKnight;
 
 typedef unsigned int Level;
 struct levelSpecificDataContainer;
@@ -63,7 +65,7 @@ public:
 	Game();
 	~Game();
 
-	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame);
+	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame, string selectedCharacter);
 	//void initObjects();
 	void handleEvents();
 	void update();

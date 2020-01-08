@@ -17,20 +17,6 @@ void SpecializedHeroClassVoidWalker::castAbility() {
 
 		this->xPos = xPos;
 		this->yPos = yPos;
-
-		/*TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
-		SDL_Rect blittingRectangle;
-		blittingRectangle.x = xPos;
-		blittingRectangle.y = yPos;
-		blittingRectangle.h = SCALESIZE;
-		blittingRectangle.w = SCALESIZE;
-		SDL_Texture* voidHoleTexture = textureManager::loadTexture(VOID_HOLE_PNG);
-		int voidHoleColdown = VOID_HOLE_COLDOWN;
-
-		while (voidHoleColdown) {
-			SDL_RenderCopy(Game::renderer, voidHoleTexture, nullptr, &blittingRectangle);
-			voidHoleColdown--;
-		}*/
 	}
 }
 

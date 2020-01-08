@@ -13,6 +13,9 @@ UpgradedMobs::~UpgradedMobs()
 
 
 void UpgradedMobs::update() {
+	destinationRectangle.x = xPos * SCALESIZE;
+	destinationRectangle.y = yPos * SCALESIZE;
+
 	if (playerIsInVision(UPGRADED_MOBS_VISION)) {
 		int heroX = heroRefference->getXpos();
 		int heroY = heroRefference->getYpos();

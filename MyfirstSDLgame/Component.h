@@ -60,6 +60,9 @@ public:
 	virtual int getAbilityColdown() {
 		return abilityColdown;
 	}
+	virtual void addMobsArr(vector <Component*> mobArray) {
+	}
+
 	void makeComponentInactive() {
 		isActive = false;
 	}

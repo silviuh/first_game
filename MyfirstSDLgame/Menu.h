@@ -32,7 +32,7 @@ public:
 	void moveUp();
 	void moveDown();
 	virtual void drawMenu();
-	void selectCurrentItem();
+	virtual void selectCurrentItem();
 	void handleEvents();
 
 	void setInstruction(int offsetInMenu, function);

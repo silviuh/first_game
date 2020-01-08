@@ -4,6 +4,8 @@
 #include "Utils.h"
 #include "Hero.h"
 #include "SpecializedHeroClassVoidWalker.h"
+#include "SpecializedHeroClassMage.h"
+#include "SpecializedHeroKnight.h"
 #include "Mob.h"
 #include "UpgradedMobs.h"
 #include "GoldCoin.h"
@@ -31,7 +33,7 @@ Game::~Game() {
 
 }
 
-int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame) {
+int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame, string selectedCharacter) {
 	int flags = false;
 	fullScreen ? flags = SDL_WINDOW_FULLSCREEN : flags = false;
 
@@ -64,7 +66,14 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	currentLevel = currentLevelInGame;
 	levelMap = new Map();
 	//mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
-	mainPlayer = new SpecializedHeroClassVoidWalker(VOID_WALKER_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+
+	if(selectedCharacter == "VOID_WALKER")
+		mainPlayer = new SpecializedHeroClassVoidWalker(VOID_WALKER_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+	else if (selectedCharacter == "MAGE")
+		mainPlayer = new SpecializedHeroClassMage (MAGE_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+	else if (selectedCharacter == "KNIGHT")
+		mainPlayer = new SpecializedHeroKnight(KNIGHT_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+
 
 	levelMap->LoadMap(Game::storageContainerForLevels.at(currentLevel - 1).second.mapFilePath);
 	generateBluePrintMap();
@@ -140,6 +149,8 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 		mapBluePrint[tempPair.first][tempPair.second] = UPGRADED_MOB_ON_MAP;
 	}
 
+
+	mainPlayer->addMobsArr(MobsArray);
 }
 
 void Game::handleEvents() {
@@ -467,6 +478,8 @@ void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const i
 			if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
 				mainPlayer.decreaseHealth(BASIC_MOB_DAMAGE);
 			}
+		if (mobsArray.at(i)->getCurrentLife() <= 0)
+			mobsArray.at(i)->makeComponentInactive();
 	}
 }
 

@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CharacterMenu.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EndGameMenu.cpp" />
     <ClCompile Include="gameHandler.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mob.cpp" />
+    <ClCompile Include="SpecializedHeroClassMage.cpp" />
     <ClCompile Include="SpecializedHeroClassVoidWalker.cpp" />
     <ClCompile Include="SpecializedHeroKnight.cpp" />
     <ClCompile Include="SpikedTrap.cpp" />
@@ -156,6 +158,7 @@
     <ClCompile Include="UpgradedMobs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CharacterMenu.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="EndGameMenu.h" />
     <ClInclude Include="gameHandler.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mob.h" />
+    <ClInclude Include="SpecializedHeroClassMage.h" />
     <ClInclude Include="SpecializedHeroClassVoidWalker.h" />
     <ClInclude Include="SpecializedHeroKnight.h" />
     <ClInclude Include="SpikedTrap.h" />

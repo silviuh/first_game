@@ -21,6 +21,7 @@
 #define SPIKED_BALL_DAMAGE 50
 #define BASIC_MOB_DAMAGE 10
 #define UPGRADED_MOB_DAMAGE 20
+#define EARTH_SMASH_DAMAGE 30
 
 #define COIN_ON_MAP -10
 #define SPIKY_BALL_ON_MAP -11
@@ -82,6 +83,8 @@
 #define STARTING_Y_POS 2
 
 #define VOID_HOLE_COLDOWN 10
+#define EARTH_SMASH_COLDOWN 10
+#define INSTANT_KILL_COLDOWN 15
 
 enum GOLD_COINS_LEVEL {
 	GOLD_COINS_LEVEL1 = 1,
@@ -102,6 +105,8 @@ const int goldCoinsPerLevel[3][2] = {
 
 #define PLAYER_WON_THE_LEVEL 9999
 
+#define MAX_VALUE 999999999999
+
 #define GRASS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grassTile.png"
 #define SAND_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sand.png"
 #define SKY_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sky.png"
@@ -113,6 +118,11 @@ const int goldCoinsPerLevel[3][2] = {
 #define EYE_BOT "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define HERO_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\king2.png"
 #define VOID_WALKER_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\voidWalker.png"
+#define MAGE_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mageClass.png"
+#define KNIGHT_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\knight.png"
+#define VOID_WALKER_PNG_SELECTED "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\voidWalker_selected.png"
+#define KNIGHT_PNG_SELECTED "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\knight_selected.png"
+#define MAGE_PNG_SELECTED "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\mage_selected.png"
 
 #define MOB_LVL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyebot.png"
 #define MOB_LVL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\eyelander.png"
@@ -125,7 +135,6 @@ const int goldCoinsPerLevel[3][2] = {
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
 #define BALOO "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\baloo.ttf"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
-
 
 
 enum ErrorFlagSystem {

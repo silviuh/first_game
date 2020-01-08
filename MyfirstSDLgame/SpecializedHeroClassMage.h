@@ -1,14 +1,15 @@
 #pragma once
+#include "Mob.h"
 #include "Hero.h"
-class SpecializedHeroKnight : public Hero{
+class SpecializedHeroClassMage : public Hero {
 private:
 	Map* levelMap;
 	vector <Component*> mobArray;
 
 public:
-	SpecializedHeroKnight(const char* filePath, int xPos, int yPos, int health, Map* levelMap) : Hero(filePath, xPos, yPos, health) {
+	SpecializedHeroClassMage(const char* filePath, int xPos, int yPos, int health, Map* levelMap) : Hero(filePath, xPos, yPos, health) {
 		this->levelMap = levelMap;
-		abilityColdown = EARTH_SMASH_COLDOWN;
+		abilityColdown = INSTANT_KILL_COLDOWN;
 		abilityCanBeCasted = true;
 	}
 
@@ -33,11 +34,6 @@ public:
 		this->mobArray = mobArray;
 	}
 
-	bool inRangeForEarthSmash(int givenX, int givenY) {
-		return xPos == givenX or yPos == givenY;
-	}
-
-
-	~SpecializedHeroKnight();
+	~SpecializedHeroClassMage() {}
 };
 
