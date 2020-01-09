@@ -63,6 +63,8 @@ public:
 	virtual void addMobsArr(vector <Component*> mobArray) {
 	}
 
+	virtual void setHeroRefference(Component* givenHero){}
+
 	void makeComponentInactive() {
 		isActive = false;
 	}

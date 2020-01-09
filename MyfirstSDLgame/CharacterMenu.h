@@ -17,12 +17,12 @@ private:
 public:
 
 	CharacterMenu(int width, int height, point location, const std::vector<menuItem> &options) : Menu(width, height, location, options) {
-		selectedCharacter = nullptr;
+		selectedCharacter = string ("UNSET");
 	}
 	~CharacterMenu();
 
 
-	void characterDataInit() {
+	void characterDataInit() override{
 		characterData temp;
 
 		temp.characterClassName = string("VOID_WALKER");
@@ -39,18 +39,19 @@ public:
 
 		temp.characterClassName = string("KNIGHT");
 		temp.characterPNG = string(KNIGHT_PNG);
-		temp.characterPNG = string(KNIGHT_PNG_SELECTED);
+		temp.characterSelectedPNG = string(KNIGHT_PNG_SELECTED);
 		temp.characterAbilityInfo = string("< < Atacks all enemies on the same y or x - axis. > > ");
 		charDataArray.push_back(temp);
 	};
 
 
-	void moveUp();
-	void moveDown();
+	void moveUp() override;
+	void moveDown() override;
 	void drawMenu() override;
 	void selectCurrentItem() override;
-	void handleEvents();
-	string getSelectedCharacter() {
+	void handleEvents() override;
+	string getSelectedCharacter() override{
+		MenuIsActive = false;
 		return selectedCharacter;
 	}
 };

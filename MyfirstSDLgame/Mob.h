@@ -42,6 +42,10 @@ public:
 		return health;
 	}
 
+	void setHeroRefference(Component* givenHero) override{
+		heroRefference = givenHero;
+	}
+
 	bool playerIsInVision(int givenDistance);
 
 

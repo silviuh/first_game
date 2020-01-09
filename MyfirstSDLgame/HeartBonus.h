@@ -19,6 +19,11 @@ public:
 		else
 			heroReference->increaseHealth(givenBonus);
 	}
+
+	void setHeroRefference(Component* givenHero) override {
+		heroReference = givenHero;
+	}
+
 	void update() override {
 
 	}

@@ -33,7 +33,26 @@ Game::~Game() {
 
 }
 
-int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame, string selectedCharacter) {
+
+void Game::createHeroes() {
+	delete mainPlayer;
+	if (selectedCharacter == "VOID_WALKER")
+		mainPlayer = new SpecializedHeroClassVoidWalker(VOID_WALKER_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+	else if (selectedCharacter == "MAGE")
+		mainPlayer = new SpecializedHeroClassMage(MAGE_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap), mainPlayer->addMobsArr(MobsArray);
+	else if (selectedCharacter == "KNIGHT")
+		mainPlayer = new SpecializedHeroKnight(KNIGHT_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap), mainPlayer->addMobsArr(MobsArray);
+
+	for (int i = 0; i < MobsArray.size(); i++) {
+		MobsArray.at(i)->setHeroRefference(mainPlayer);
+	}
+	for (int i = 0; i < heartsArray.size(); i++) {
+		heartsArray.at(i)->setHeroRefference(mainPlayer);
+	}
+}
+
+
+int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, int currentLevelInGame) {
 	int flags = false;
 	fullScreen ? flags = SDL_WINDOW_FULLSCREEN : flags = false;
 
@@ -65,15 +84,14 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 
 	currentLevel = currentLevelInGame;
 	levelMap = new Map();
-	//mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
+	mainPlayer = new Hero(HERO_PNG, STARTING_X_POS, STARTING_Y_POS, 100);
 
-	if(selectedCharacter == "VOID_WALKER")
-		mainPlayer = new SpecializedHeroClassVoidWalker(VOID_WALKER_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+	if (selectedCharacter == "VOID_WALKER")
+		mainPlayer = new Hero(VOID_WALKER_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH);
 	else if (selectedCharacter == "MAGE")
-		mainPlayer = new SpecializedHeroClassMage (MAGE_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
+		mainPlayer = new Hero(MAGE_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH);
 	else if (selectedCharacter == "KNIGHT")
-		mainPlayer = new SpecializedHeroKnight(KNIGHT_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH, levelMap);
-
+		mainPlayer = new Hero(KNIGHT_PNG, STARTING_X_POS, STARTING_Y_POS, MAX_HERO_HEALTH);
 
 	levelMap->LoadMap(Game::storageContainerForLevels.at(currentLevel - 1).second.mapFilePath);
 	generateBluePrintMap();
@@ -148,9 +166,6 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 		MobsArray.push_back(newUpgradedMob);
 		mapBluePrint[tempPair.first][tempPair.second] = UPGRADED_MOB_ON_MAP;
 	}
-
-
-	mainPlayer->addMobsArr(MobsArray);
 }
 
 void Game::handleEvents() {

@@ -47,6 +47,7 @@ private:
 	vector <SpikedTrap*> SpikedTrapArray;
 	vector <Component*> MobsArray;
 	vector <HeartBonus*> heartsArray;
+	string selectedCharacter;
 
 	int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND];
 
@@ -65,7 +66,8 @@ public:
 	Game();
 	~Game();
 
-	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, const int GoldCoins, int currentLevelInGame, string selectedCharacter);
+	int init(char* gameTitle, int xpos, int ypos, int width, int height, bool fullScreen, int currentLevelInGame);
+	void createHeroes();
 	//void initObjects();
 	void handleEvents();
 	void update();
@@ -111,7 +113,9 @@ public:
 	static void renderCurrentLevelNumber(const int currentLevel);
 	static void initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > &);
 	
-
+	void setCharacter(string givenChar) {
+		selectedCharacter = givenChar;
+	}
 
 
 	//static void initMenu();

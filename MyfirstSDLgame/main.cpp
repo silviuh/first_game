@@ -1,6 +1,7 @@
 #include "gameHandler.h"
 #include "LevelManager.h"
 #include "EndGameMenu.h"
+#include "CharacterMenu.h"
 
 bool restartGameFlag = false;
 bool backToMainMenuFlag = false;
@@ -9,6 +10,7 @@ int totalScore = 0;
 Game *game = nullptr;
 Menu *endGameMenu = nullptr;
 Menu* mainMenu = nullptr;
+Menu* characterMenu;
 LevelManager *gameLevelManager = nullptr;
 
 Menu* endGameMenuInit(int finalScore, int levelReached);
@@ -33,11 +35,10 @@ int main(int argc, char* args[])
 	Uint32 lastUpdate = 0;
 	int frameTime;
 
-
 	game = new Game();
-	game->init((char*) "IN DIRE NEED OF SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_1); // we have choosen numbers that divide by 32 for the screen resolution
-	mainMenu = mainMenuInit();
+	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, LEVEL_1);
 	gameLevelManager = new LevelManager(game);
+	mainMenu = mainMenuInit();
 
 	
 	MainMenuLabel:
@@ -56,101 +57,81 @@ int main(int argc, char* args[])
 
 
 	if (mainMenu->returnRequestForExitingTheGame() == false) {
-	GamePlayLabel:
-		while (true == game->gameIsRunning()) {
+		//vector<menuItem> emptyContainer;
+		characterMenu = new CharacterMenu(250, 80, make_pair(270, 210), vector<menuItem>());
+		characterMenu->characterDataInit();
 
+		while (characterMenu->menuIsActive() == true) {
 			frameStart = SDL_GetTicks();
-			game->handleEvents();
 
-			if (frameStart - lastUpdate >= 300) {
-				game->update();
-				lastUpdate = SDL_GetTicks();
-			}
+			characterMenu->drawMenu();
+			characterMenu->handleEvents();
 
-			pair<int, int> playerStatus = game->render();
-			if (playerStatus.first == PLAYER_IS_DEAD) {
-				totalScore += playerStatus.second;
-				Menu* endGameMenu = endGameMenuInit(totalScore, game->currentLevel);
-				endGameMenu->showMessageWhenPlayerDies = true;
-
-				while (endGameMenu->menuIsActive() == true) {
-					frameStart = SDL_GetTicks();
-
-					endGameMenu->drawMenu();
-					endGameMenu->handleEvents();
-
-					switch (endGameMenu->optionsFlag) {
-					case RESTART_GAME_FLAG:
-						goto GamePlayLabel;
-						break;
-					case BACK_TO_MY_MENU_FLAG:
-						goto MainMenuLabel;
-						break;
-					case QUIT_GAME_FLAG:
-						cout << "\n You exited the game!";
-						break;
-					default:
-						break;
-					}
-
-					frameTime = SDL_GetTicks() - frameStart;
-
-					if (frameDelay > frameTime) {
-						SDL_Delay(frameDelay - frameTime);
-					}
-				}
-			}
-
-			else if (playerStatus.first == PLAYER_WON_THE_LEVEL) {
-				gameLevelManager->getCurrentScoreOnLevelSucces(playerStatus.second);
-				totalScore += playerStatus.second;
-				game = gameLevelManager->loadNextLevel();
-
-			}
-			/*if (gameLevelManager->endGameWithVictoryFlag == true) {
-				//game->switchOffGameLoop();
-				Menu* endGameMenu = endGameMenuInit(totalScore, game->currentLevel);
-
-				while (endGameMenu->menuIsActive() == true) {
-					frameStart = SDL_GetTicks();
-
-					endGameMenu->drawMenu();
-					endGameMenu->handleEvents();
-
-					switch (endGameMenu->optionsFlag) {
-					case RESTART_GAME_FLAG:
-						goto GamePlayLabel;
-						break;
-					case BACK_TO_MY_MENU_FLAG:
-						goto MainMenuLabel;dddddsss
-						break;
-					case QUIT_GAME_FLAG:
-						cout << "\n You exited the game!";
-						break;
-					default:
-						break;
-					}
-
-					frameTime = SDL_GetTicks() - frameStart;
-
-					if (frameDelay > frameTime) {
-						SDL_Delay(frameDelay - frameTime);
-					}
-				}
-				goto GamePlayLabel;
-			}
-
-
-			// we want 60 frames/sec so we have to delay the current load with the difference between
-			// how much time takes to load SDL once and the desired time for a single frame to take place
 			frameTime = SDL_GetTicks() - frameStart;
 
 			if (frameDelay > frameTime) {
 				SDL_Delay(frameDelay - frameTime);
 			}
-
 		}
-		*/
+
+		gameLevelManager->setCurrentCharacterInGame(characterMenu->getSelectedCharacter());
+		game->setCharacter(characterMenu->getSelectedCharacter());
+		game->createHeroes();
+		; // we have choosen numbers that divide by 32 for the screen resolution
+
+		if (characterMenu->returnRequestForExitingTheGame() == false) {
+		GamePlayLabel:
+			while (true == game->gameIsRunning()) {
+
+				frameStart = SDL_GetTicks();
+				game->handleEvents();
+
+				if (frameStart - lastUpdate >= 300) {
+					game->update();
+					lastUpdate = SDL_GetTicks();
+				}
+
+				pair<int, int> playerStatus = game->render();
+				if (playerStatus.first == PLAYER_IS_DEAD) {
+					totalScore += playerStatus.second;
+					Menu* endGameMenu = endGameMenuInit(totalScore, game->currentLevel);
+					endGameMenu->showMessageWhenPlayerDies = true;
+
+					while (endGameMenu->menuIsActive() == true) {
+						frameStart = SDL_GetTicks();
+
+						endGameMenu->drawMenu();
+						endGameMenu->handleEvents();
+
+						switch (endGameMenu->optionsFlag) {
+						case RESTART_GAME_FLAG:
+							goto GamePlayLabel;
+							break;
+						case BACK_TO_MY_MENU_FLAG:
+							goto MainMenuLabel;
+							break;
+						case QUIT_GAME_FLAG:
+							cout << "\n You exited the game!";
+							break;
+						default:
+							break;
+						}
+
+						frameTime = SDL_GetTicks() - frameStart;
+
+						if (frameDelay > frameTime) {
+							SDL_Delay(frameDelay - frameTime);
+						}
+					}
+				}
+
+				else if (playerStatus.first == PLAYER_WON_THE_LEVEL) {
+					gameLevelManager->getCurrentScoreOnLevelSucces(playerStatus.second);
+					totalScore += playerStatus.second;
+					game = gameLevelManager->loadNextLevel();
+
+				}
+			}
 		}
 	}
 	
@@ -167,6 +148,7 @@ void startGame() {
 
 void mainMenuQuitGame() {
 	mainMenu->switchOffMenuLoop();
+	mainMenu->gameExit();
 	game->switchOffGameLoop();
 }
 
@@ -264,7 +246,9 @@ void restartGame() {
 	game->clean();
 	delete game;
 	game = new Game();
-	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_1);
+	game->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, LEVEL_1);
+	game->setCharacter(gameLevelManager->getCurrentCharacterInGame());
+	game->createHeroes();
 
 	endGameMenu->optionsFlag = RESTART_GAME_FLAG;
 }
@@ -273,6 +257,7 @@ void backToMyMenu() {
 	restartGame();
 
 	mainMenu->switchOnMenuLoop();
+	characterMenu->switchOnMenuLoop();
 	mainMenu->switchOnInstructionMenu();
 	endGameMenu->optionsFlag = BACK_TO_MY_MENU_FLAG;
 }
@@ -280,6 +265,7 @@ void backToMyMenu() {
 void endMenuQuitGame() {
 	endGameMenu->switchOffMenuLoop();
 	mainMenu->switchOffMenuLoop();
+	characterMenu->switchOffMenuLoop();
 	game->switchOffGameLoop();
 
 	endGameMenu->optionsFlag = QUIT_GAME_FLAG;

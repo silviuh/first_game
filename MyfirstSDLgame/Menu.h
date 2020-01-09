@@ -29,11 +29,11 @@ public:
 
 	Menu(int width, int height, point location, const std::vector<menuItem> &options);
 	~Menu();
-	void moveUp();
-	void moveDown();
+	virtual void moveUp();
+	virtual void moveDown();
 	virtual void drawMenu();
 	virtual void selectCurrentItem();
-	void handleEvents();
+	virtual void handleEvents();
 
 	void setInstruction(int offsetInMenu, function);
 
@@ -65,6 +65,14 @@ public:
 
 	void gameExit() {
 		requestForExitingTheGame = true;
+	}
+
+	virtual string getSelectedCharacter() {
+		return string("unset");
+	}
+
+	virtual void characterDataInit() {
+
 	}
 };
 

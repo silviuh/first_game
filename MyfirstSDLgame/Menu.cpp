@@ -106,6 +106,7 @@ void Menu::handleEvents() {
 		}
 		case SDL_QUIT: {
 			MenuIsActive = false;
+			requestForExitingTheGame = true;
 			break;
 		}
 		}

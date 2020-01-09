@@ -30,7 +30,10 @@ Game* LevelManager::loadNextLevel() {
 		gameHandlerReference->clean();
 		delete gameHandlerReference;
 		gameHandlerReference = new Game();
-		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_2);
+		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, LEVEL_2);
+		gameHandlerReference->setCharacter(currentCharacterInGame);
+		Game::heroDirection = UNSET;
+		gameHandlerReference->createHeroes();
 		succes = true;
 
 		int timer = 500;
@@ -48,7 +51,10 @@ Game* LevelManager::loadNextLevel() {
 		gameHandlerReference->clean();
 		delete gameHandlerReference;
 		gameHandlerReference = new Game();
-		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, 10, LEVEL_3);
+		gameHandlerReference->init((char*) "IN DIRE NEED FOR SOME COIN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false, LEVEL_3);
+		gameHandlerReference->setCharacter(currentCharacterInGame);
+		Game::heroDirection = UNSET;
+		gameHandlerReference->createHeroes();
 		succes = true;
 
 		int timer = 500;

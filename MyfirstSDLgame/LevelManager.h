@@ -7,6 +7,7 @@ private:
 	int currentLevel;
 	int totalScore;
 	int currentLevelheroScore;
+	string currentCharacterInGame;
 	Game* gameHandlerReference;
 
 public:
@@ -27,9 +28,21 @@ public:
 		currentLevel = LEVEL_1;
 	}
 
+	void setCurrentCharacterInGame(string givenChar) {
+		currentCharacterInGame = givenChar;
+	}
+
+	string getCurrentCharacterInGame() {
+		return currentCharacterInGame;
+	}
+
 	static void levelLoadScreen(int currentLevel);
 
 	void loadFinalScreen();
+
+	int getCurrentLevel() {
+		return currentLevel;
+	}
 
 };
 
