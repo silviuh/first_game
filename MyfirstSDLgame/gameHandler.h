@@ -12,7 +12,7 @@
 #include <queue>
 #include <utility>
 #include <time.h>   
-
+#include "ErrorHandling.h"
 #include <fstream>
 
 #include <typeinfo>

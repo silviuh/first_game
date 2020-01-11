@@ -29,7 +29,7 @@ void endMenuQuitGame();
 int main(int argc, char* args[])
 {
 	const int FPS = 100;
-	const int frameDelay = 1000 / FPS; // how much time passes between 2 frame displays
+	const int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart = 0;
 	Uint32 lastUpdate = 0;
@@ -57,7 +57,6 @@ int main(int argc, char* args[])
 
 
 	if (mainMenu->returnRequestForExitingTheGame() == false) {
-		//vector<menuItem> emptyContainer;
 		characterMenu = new CharacterMenu(250, 80, make_pair(270, 210), vector<menuItem>());
 		characterMenu->characterDataInit();
 
@@ -77,7 +76,6 @@ int main(int argc, char* args[])
 		gameLevelManager->setCurrentCharacterInGame(characterMenu->getSelectedCharacter());
 		game->setCharacter(characterMenu->getSelectedCharacter());
 		game->createHeroes();
-		; // we have choosen numbers that divide by 32 for the screen resolution
 
 		if (characterMenu->returnRequestForExitingTheGame() == false) {
 		GamePlayLabel:
@@ -137,6 +135,7 @@ int main(int argc, char* args[])
 	
 	delete mainMenu;
 	delete endGameMenu;
+	delete characterMenu;
 	game->clean();
 	return 0;
 }
@@ -151,9 +150,6 @@ void mainMenuQuitGame() {
 	mainMenu->gameExit();
 	game->switchOffGameLoop();
 }
-
-
-
 
 void instructionsMenuManager() {
 	mainMenu->switchOnInstructionMenu();
@@ -176,7 +172,7 @@ void instructionsMenuManager() {
 				}
 				break;
 			}
-							  // exiting the game
+
 			case SDL_QUIT: {
 				mainMenu->switchOffInstructionMenu();
 				mainMenu->switchOffMenuLoop();
@@ -239,7 +235,6 @@ Menu* mainMenuInit(){
 	return mainMenu;
 }
 
-// restart always loads the first level
 void restartGame() {
 	endGameMenu->switchOffMenuLoop();
 

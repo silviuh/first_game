@@ -20,7 +20,14 @@ void EndGameMenu::drawMenu() {
 		SDL_RenderClear(Game::renderer);
 
 		for (int i = 0; i < textArray.size(); i++) {
-			SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(archery_black, textArray.at(i).c_str(), SDL_Color({ 139,0,139 }), 350);			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+			SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(archery_black, textArray.at(i).c_str(), SDL_Color({ 139,0,139 }), 350);
+			if (nullptr == textSurface)
+				LOG_ERROR("TTF_RenderText_Blended_Wrapped failed", 23);
+
+			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+			if (nullptr == textTexture)
+				LOG_ERROR("SDL_CreateTextureFromSurface failed", 27);
+
 			SDL_FreeSurface(textSurface);
 			SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 			blittingRectangle.y += 70;
@@ -35,7 +42,13 @@ void EndGameMenu::drawMenu() {
 		else
 			textSurface = TTF_RenderText_Solid(font, items.at(i).text.c_str(), textColor[0]);
 
+		if (nullptr == textSurface)
+			LOG_ERROR("TTF_RenderText_Solid failed", 40);
+
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+		if (nullptr == textTexture)
+			LOG_ERROR("SDL_CreateTextureFromSurface failed", 52);
+
 		SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 		blittingRectangle.y += 70;
 		SDL_FreeSurface(textSurface);

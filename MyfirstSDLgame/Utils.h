@@ -12,7 +12,7 @@
 
 
 
-// <---------------------------------------- DEFINES FOR GTAPIHCS USAGE ---------------------------------------->
+// <---------------------------------------- DEFINES FOR GAME MECHANICS AND GRAPHICS ---------------------------------------->
 #define UNDEFINED_SCORE -1
 #define _X_MAP_BOUND 25
 #define _Y_MAP_BOUND 25
@@ -69,8 +69,8 @@
 #define LEVEL_2 2
 #define LEVEL_3 3
 
-#define NUMBER_OF_GOLD_COINS_LEVEL1 1
-#define NUMBER_OF_GOLD_COINS_LEVEL2 1
+#define NUMBER_OF_GOLD_COINS_LEVEL1 3
+#define NUMBER_OF_GOLD_COINS_LEVEL2 5
 #define NUMBER_OF_GOLD_COINS_LEVEL3 8
 
 #define NUMBER_OF_HEARTS_LEVEL_1 1
@@ -106,7 +106,16 @@ const int goldCoinsPerLevel[3][2] = {
 #define PLAYER_WON_THE_LEVEL 9999
 
 #define MAX_VALUE 999999999999
+//  <----------------------------------------      END DEFINES     ---------------------------------------->
 
+
+
+
+
+
+
+
+//  <----------------------------------------      DEFINES FOR FILE PATHS     ---------------------------------------->
 #define GRASS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grassTile.png"
 #define SAND_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sand.png"
 #define SKY_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sky.png"
@@ -134,9 +143,19 @@ const int goldCoinsPerLevel[3][2] = {
 #define ARCHERY_BLACK "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\archeryBlack.ttf"
 #define TAHOMA "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\TAHOMA.ttf"
 #define BALOO "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\baloo.ttf"
+
+#define FILE_PATH_MAP_LEVEL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL1_MAP.txt"
+#define FILE_PATH_MAP_LEVEL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL2_MAP.txt"
+#define FILE_PATH_MAP_LEVEL_3 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL3_MAP.txt"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
 
 
+
+
+
+
+
+//  <----------------------------------------      OTHER DEFINES     ---------------------------------------->
 enum ErrorFlagSystem {
 	_windowFullScreen = ERROR_BASE_CODE,
 	_windowInitEverything,
@@ -172,12 +191,8 @@ const int dirX[] = { 0, 1, 0, -1 };
 const int dirY[] = { -1, 0, 1, 0 };
 
 
-
-#define FILE_PATH_MAP_LEVEL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL1_MAP.txt"
-#define FILE_PATH_MAP_LEVEL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL2_MAP.txt"
-#define FILE_PATH_MAP_LEVEL_3 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL3_MAP.txt"
-
 #define LOOPMENU true
 
 
 #define INSTRUCTIONS_TEXT "Move the hero with w, a, s, d.  Attack the mobs with space and try to collect as many gold coins as possible with a view of increasing your high score. Have fun:) (Press enter to go back to the main menu)"
+//  <----------------------------------------      END DEFINES     ---------------------------------------->

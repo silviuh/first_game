@@ -13,13 +13,11 @@ void SpecializedHeroKnight::castAbility() {
 	}
 }
 
-
 void SpecializedHeroKnight::update() {
 	Hero::update();
 	castAbility();
 	abilityActivated = false;
 }
-
 
 
 SpecializedHeroKnight::~SpecializedHeroKnight()

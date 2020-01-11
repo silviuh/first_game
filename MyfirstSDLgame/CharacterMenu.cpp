@@ -26,7 +26,13 @@ void CharacterMenu::moveDown() {
 
 void CharacterMenu::drawMenu() {
 	TTF_Font* tahoma = TTF_OpenFont(TAHOMA, 20);
+	if (nullptr == tahoma)
+		LOG_ERROR("TTF_OpenFont failed", 30);
+
 	TTF_Font* archery_black = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == archery_black)
+		LOG_ERROR("TTF_OpenFont failed", 32);
+
 	SDL_Rect blittingRectangleHero, blittingRectangleText;
 	blittingRectangleHero.x = 300;
 	blittingRectangleHero.y = 60;
@@ -53,13 +59,11 @@ void CharacterMenu::drawMenu() {
 			SDL_RenderCopy(Game::renderer, pngTexture, nullptr, &blittingRectangleHero);
 			textSurface = TTF_RenderText_Solid(font, charDataArray.at(i).characterAbilityInfo.c_str(), textColor[0]);
 		}
-			
-		/*SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(archery_black, charDataArray.at(i).characterAbilityInfo.c_str(), SDL_Color({ 139,0,139 }), 350);
-		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
-		SDL_FreeSurface(textSurface);
-		SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);*/
 
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+		if (nullptr == textTexture)
+			LOG_ERROR("SDL_CreateTextureFromSurface failed", 63);
+
 		SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangleText);
 		SDL_FreeSurface(textSurface);
 

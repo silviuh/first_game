@@ -161,6 +161,7 @@
     <ClInclude Include="CharacterMenu.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="EndGameMenu.h" />
+    <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="gameHandler.h" />
     <ClInclude Include="GoldCoin.h" />
     <ClInclude Include="HeartBonus.h" />

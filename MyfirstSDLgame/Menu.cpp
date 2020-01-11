@@ -9,6 +9,8 @@ Menu::Menu(int width, int height, point location, const std::vector<menuItem> &o
 
 	TTF_Init();
 	font = TTF_OpenFont(BALOO, 20);
+	if (nullptr == font)
+		LOG_ERROR("TTF_OpenFont failed", 12);
 	
 	textColor[0] = { 204, 0, 204 };
 	textColor[1] = { 255, 255, 51 };
@@ -69,7 +71,13 @@ void Menu::drawMenu() {
 		else
 			textSurface = TTF_RenderText_Solid(font, items.at(i).text.c_str(), textColor[0]);
 
+		if (nullptr == textSurface)
+			LOG_ERROR("TTF_RenderText_Solid failed", 70);
+
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+		if (nullptr == textTexture)
+			LOG_ERROR("SDL_CreateTextureFromSurface failed", 77);
+
 		SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 		blittingRectangle.y += 70;
 		SDL_FreeSurface(textSurface);
@@ -80,7 +88,6 @@ void Menu::drawMenu() {
 
 
 void Menu::selectCurrentItem() {
-	// later complete this with start game, instructions, exit.
 	items[currentItem].optionFunction();
 }
 

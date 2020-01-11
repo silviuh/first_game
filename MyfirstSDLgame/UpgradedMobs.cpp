@@ -11,7 +11,6 @@ UpgradedMobs::~UpgradedMobs()
 {
 }
 
-
 void UpgradedMobs::update() {
 	destinationRectangle.x = xPos * SCALESIZE;
 	destinationRectangle.y = yPos * SCALESIZE;
@@ -35,7 +34,6 @@ void UpgradedMobs::update() {
 		if (yPos <= heroY) {
 			newY++;
 		}
-
 
 		if (Game::levelMap->Collision(newX, newY) != true) {
 			xPos = newX;

@@ -81,9 +81,10 @@ Game* LevelManager::loadNextLevel() {
 void LevelManager::levelLoadScreen(int currentLevel) {
 	SDL_RenderClear(Game::renderer);
 	TTF_Font *font = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == font)
+		LOG_ERROR("TTF_OpenFont failed", 83);
+
 	string text = "LEVEL " + to_string(currentLevel) + " Loading ...";
-
-
 
 	SDL_Rect blittingRectangle;
 	blittingRectangle.x = 100;
@@ -92,7 +93,13 @@ void LevelManager::levelLoadScreen(int currentLevel) {
 	blittingRectangle.w = 600;
 
 	SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), SDL_Color({ 148,0,211 }), 350);
+	if (nullptr == textSurface)
+		LOG_ERROR("TTF_RenderText_Blended_Wrapped failed", 97);
+
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	if (nullptr == textTexture)
+		LOG_ERROR("SDL_CreateTextureFromSurface failed", 99);
+
 	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 
 	SDL_RenderPresent(Game::renderer);
@@ -105,6 +112,9 @@ void LevelManager::loadFinalScreen() {
 	
 	SDL_RenderClear(Game::renderer);
 	TTF_Font *font = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == font)
+		LOG_ERROR("TTF_OpenFont failed", 114);
+
 	string text = "YOU HAVE WON THE GAME! CONGRATULATIONS. FINAL SCORE IS: " + to_string(total);
 
 	SDL_Rect blittingRectangle;
@@ -114,7 +124,13 @@ void LevelManager::loadFinalScreen() {
 	blittingRectangle.w = 600;
 
 	SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), SDL_Color({ 148,0,211 }), 350);
+	if (nullptr == textSurface)
+		LOG_ERROR("TTF_RenderText_Blended_Wrapped failed", 126);
+
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	if (nullptr == textTexture)
+		LOG_ERROR("SDL_CreateTextureFromSurface failed", 130);
+
 	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
 
 	SDL_RenderPresent(Game::renderer);

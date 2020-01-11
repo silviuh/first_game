@@ -27,12 +27,10 @@ Component::~Component() {
 }
 
 void Component::update() {
-	// here we will use the lee algorithm for deciding  where to set the next tile for the mobs
-	// or simply moving the player to W, N, E, S direction
 }
 
 void Component::render() {
 	if (false != SDL_RenderCopy(Game::renderer, this->objTexture, &sourceRectangle, &destinationRectangle))
-		printf("\n%s ", SDL_GetError());
+		LOG_ERROR("SDL_RenderCopy failed", 33);
 }
 

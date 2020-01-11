@@ -22,6 +22,9 @@ int Mob::mobCounter = 0;
 int Mob::movementTime = 0;
 vector < pair<Level, levelSpecificDataContainer> > Game::storageContainerForLevels;
 
+
+
+//  <----------------------------------------     GAME INITIALIZATION    ---------------------------------------->
 Game ::Game() {
 	this->isRunning = false;
 	this->window = nullptr;
@@ -57,14 +60,14 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	fullScreen ? flags = SDL_WINDOW_FULLSCREEN : flags = false;
 
 	if (false == SDL_Init(SDL_INIT_EVERYTHING)) {
-		cout << "Subsystems Initialized...";
 		this->window = SDL_CreateWindow(gameTitle, xpos, ypos, width, height, flags);
 
 		if (false == window)
-			return _sdlCreateWindow;
+			LOG_ERROR("SDL_CreateWindow failed", 63);
 
 
 		SDL_Renderer* asd = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		LOG_ERROR("SDL_CreateRenderer failed", 67);
 		renderer = asd;
 
 		if (false == renderer)
@@ -78,7 +81,7 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 		this->isRunning = true;
 	}
 	else
-		return _windowInitEverything;
+		LOG_ERROR("SDL_Init failed", 81);
 
 	Game::initializeStorageContainerForLevels(Game::storageContainerForLevels);
 
@@ -168,6 +171,51 @@ int Game::init(char* gameTitle, int xpos, int ypos, int width, int height, bool 
 	}
 }
 
+
+
+void Game::initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > & givenVector) {
+	levelSpecificDataContainer genericLevel;
+
+	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_1;
+	genericLevel.numberOfBasicMobs = NUMBER_OF_MOBS_LEVEL_1;
+	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL1;
+	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_1;
+	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_1;
+	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_1;
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_1;
+	givenVector.push_back(make_pair(LEVEL_1, genericLevel));
+
+	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_2;
+	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_2;
+	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL2;
+	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_2;
+	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_2;
+	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_2;
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_2;
+	givenVector.push_back(make_pair(LEVEL_2, genericLevel));
+
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_1;
+	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_3;
+	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_3;
+	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL3;
+	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_3;
+	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_3;
+	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_3;
+	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_3;
+	givenVector.push_back(make_pair(LEVEL_3, genericLevel));
+}
+//  <----------------------------------------      END     ---------------------------------------->
+
+
+
+
+
+
+
+
+
+
+//  <----------------------------------------     GAME HANDLING AND UPDATE  ---------------------------------------->
 void Game::handleEvents() {
 	SDL_Event event;
 
@@ -177,7 +225,6 @@ void Game::handleEvents() {
 			this->isRunning = false;
 			break;
 		}
-					   
 		case SDL_KEYDOWN: {
 			switch (event.key.keysym.sym) {
 			case SDLK_w:
@@ -205,9 +252,6 @@ void Game::handleEvents() {
 			}
 			break;
 		}
-		
-
-
 		case SDL_KEYUP: {
 		case SDLK_w:
 			heroDirection = UNSET;
@@ -230,9 +274,6 @@ void Game::handleEvents() {
 			cout << endl;
 			break;
 		}
-
-						
-
 		default:
 			cout << "ok";
 			return;
@@ -275,12 +316,121 @@ void Game::update() {
 		mainPlayer->toogleAbilityCanBeCastedFlag();
 }
 
+pair<int, int> Game::returnHeroCoordinates(Component* hero) {
+	return make_pair(hero->getXpos(), hero->getYpos());
+}
+;
+
+void Game::generateBluePrintMap() {
+	for (int i = 0; i < _X_MAP_BOUND; i++)
+		for (int j = 0; j < _Y_MAP_BOUND; j++)
+			mapBluePrint[i][j] = levelMap->accesMapCoordinates(i, j);
+}
+
+bool Game::notInBluePrintMap(int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], int xPos, int yPos) {
+	return (mapBluePrint[xPos][yPos] < 0);
+}
+
+void Game::generateRandomCoordinates(vector <pair<int, int>> & list, Component* hero, int sizeOfRequieredList, int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], Map* levelMap) {
+	int heroX = hero->getXpos();
+	int heroY = hero->getYpos();
+	int xPos, yPos;
+	bool inVector;
+
+	for (int i = 0; i < sizeOfRequieredList; i++) {
+		do {
+			inVector = false;
+			xPos = rand() % (_X_MAP_BOUND - 3) + 2;
+			yPos = rand() % (_Y_MAP_BOUND - 3) + 2;
+			for (int i = 0; i < list.size(); i++)
+				if (make_pair(xPos, yPos) == list.at(i))
+					inVector = true;
+
+		} while (Game::notInBluePrintMap(mapBluePrint, xPos, yPos)
+			or inVector or levelMap->accesMapCoordinates(yPos, xPos) < 0);
+		list.push_back(make_pair(xPos, yPos));
+	}
+}
+
+void Game::coinsManager(vector <GoldCoin*>& goldCoinArr, const int heroX, const int heroY, Component& mainPlayer) {
+	for (int i = 0; i < goldCoinArr.size(); i++) {
+		if (goldCoinArr.at(i)->getYpos() == heroY and goldCoinArr.at(i)->getXpos() == heroX) {
+			mainPlayer.increaseScore(GOLD_COIN_SCORE_INCREASE);
+			delete goldCoinArr.at(i);
+			goldCoinArr.erase(goldCoinArr.begin() + i);
+		}
+	}
+}
+
+
+void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer) {
+	for (int i = 0; i < SpikedTrapArray.size(); i++) {
+		if (SpikedTrapArray.at(i)->isComponentActive()) {
+			if (SpikedTrapArray.at(i)->getYpos() == heroY and SpikedTrapArray.at(i)->getXpos() == heroX) {
+				mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
+				SpikedTrapArray.at(i)->makeComponentInactive();
+			}
+		}
+
+		for (int i = 0; i < SpikedTrapArray.size(); i++)
+			if (SpikedTrapArray.at(i)->isComponentActive()) {
+				for (int j = 0; j < mobsArray.size(); j++) {
+					if (mobsArray.at(j)->isComponentActive()) {
+						if (SpikedTrapArray.at(i)->getXpos() == mobsArray.at(j)->getXpos() and SpikedTrapArray.at(i)->getYpos() == mobsArray.at(j)->getYpos()) {
+							mobsArray.at(j)->decreaseHealth(SPIKED_BALL_DAMAGE);
+							SpikedTrapArray.at(i)->makeComponentInactive();
+							if (mobsArray.at(j)->getCurrentLife() <= 0)
+								mobsArray.at(j)->makeComponentInactive();
+						}
+					}
+				}
+			}
+	}
+}
+
+
+void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray) {
+	for (int i = 0; i < mobsArray.size(); i++) {
+		if (mobsArray.at(i)->isComponentActive() and mobsArray.at(i)->playerIsInVision(10))
+			if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
+				mainPlayer.decreaseHealth(BASIC_MOB_DAMAGE);
+			}
+		if (mobsArray.at(i)->getCurrentLife() <= 0)
+			mobsArray.at(i)->makeComponentInactive();
+	}
+}
+
+
+void Game::heartBonuses(vector <HeartBonus*> & heartArr, const int heroX, const int heroY) {
+	for (int i = 0; i < heartArr.size(); i++) {
+		if (heartArr.at(i)->isComponentActive())
+			if (heartArr.at(i)->getYpos() == heroY and heartArr.at(i)->getXpos() == heroX) {
+				heartArr.at(i)->HeroGetsBonus();
+				heartArr.at(i)->makeComponentInactive();
+			}
+	}
+}
+//  <----------------------------------------    END   ---------------------------------------->
 
 
 
+
+
+
+
+
+
+
+//  <----------------------------------------     GAME RENDER    ---------------------------------------->
 pair<int, int> Game::render() {
 	SDL_Surface* mySurf = IMG_Load(GOLD_COIN_PNG);
+	if (nullptr == mySurf)
+		LOG_ERROR("IMG_Load failed", 277);
+
 	SDL_Texture* myTexture = SDL_CreateTextureFromSurface(Game::renderer, mySurf);
+	if(nullptr == myTexture)
+		LOG_ERROR("IMG_Load failed", 281);
+
 	SDL_FreeSurface(mySurf);
 	SDL_Rect sr1, sr2, dr1, dr2;
 	sr1.x = sr1.y = sr2.x = sr2.y = 0;
@@ -290,7 +440,7 @@ pair<int, int> Game::render() {
 	dr2.x = dr2.y = 96;
 
 	if (false != SDL_RenderClear(renderer)) {
-		return make_pair(_SDL_RenderClear, SCORE_NOT_INITIALISED);
+		LOG_ERROR("SDL_RenderClear failed", 292);
 	}
 
 	levelMap->DrawMap();
@@ -327,27 +477,117 @@ pair<int, int> Game::render() {
 	if (GoldCoinArray.size() == NO_COINS_LEFT)
 		return make_pair(PLAYER_WON_THE_LEVEL, mainPlayer->getCurrentScore());
 
-	/*if (typeid(*mainPlayer).name() == "SpecializedHeroClassVoidWalker") {
-		renderVoidHole(mainPlayer);
-	}
-*/
 	return make_pair(_RENDERINGSUCCES, SCORE_NOT_INITIALISED);
 } 
 
+void Game::renderScore(const int currentScore) {
+	string textToDisplay = "CURRENT SCORE: " + to_string(currentScore);
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == tahoma)
+		LOG_ERROR("TTF_OpenFont failed", 494);
+
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = 620;
+	blittingRectangle.y = 0;
+	blittingRectangle.h = 32;
+	blittingRectangle.w = 150;
+
+	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 230,230,250 }), 350);
+	if (nullptr == textSurface)
+		LOG_ERROR("TTF_RenderText_Blended_Wrapped failed", 504);
+
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	if (nullptr == textTexture)
+		LOG_ERROR("SDL_CreateTextureFromSurface failed", 508);
+
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+}
+
+void Game::renderLife(const int currentLife) {
+	string textToDisplay = "HEALTH: " + to_string(currentLife);
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == tahoma)
+		LOG_ERROR("TTF_OpenFont failed", 516);
+
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = 30;
+	blittingRectangle.y = 0;
+	blittingRectangle.h = 32;
+	blittingRectangle.w = 150;
+
+	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 255,160,122 }), 350);
+	if (nullptr == textSurface)
+		LOG_ERROR("TTF_RenderText_Blended_Wrapped failed", 526);
+
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	if (nullptr == textTexture)
+		LOG_ERROR("SDL_CreateTextureFromSurface failed", 530);
+
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+}
+
+
+void Game::renderCurrentLevelNumber(const int currentLevel) {
+	string textToDisplay = "CURRENT LEVEL: " + to_string(currentLevel);
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == tahoma)
+		LOG_ERROR("TTF_OpenFont failed", 541);
+
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = 320;
+	blittingRectangle.y = 0;
+	blittingRectangle.h = 32;
+	blittingRectangle.w = 150;
+
+	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 0,255,255 }), 350);
+	if (nullptr == textSurface)
+		LOG_ERROR("TTF_RenderText_Blended_Wrapped failed", 551);
+
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
+	if (nullptr == textTexture)
+		LOG_ERROR("SDL_CreateTextureFromSurface failed", 555);
+
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
+}
+
+
+void Game::renderVoidHole(Component* hero) {
+	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
+	if (nullptr == tahoma)
+		LOG_ERROR("TTF_OpenFont failed", 565);
+
+	SDL_Rect blittingRectangle;
+	blittingRectangle.x = hero->getXpos();
+	blittingRectangle.y = hero->getYpos();
+	blittingRectangle.h = SCALESIZE;
+	blittingRectangle.w = SCALESIZE;
+
+	SDL_Texture* voidHoleTexture = textureManager::loadTexture(VOID_HOLE_PNG);
+	SDL_RenderCopy(Game::renderer, voidHoleTexture, nullptr, &blittingRectangle);
+}
+
+//  <----------------------------------------    END    ---------------------------------------->
 
 
 
+
+
+
+
+
+
+
+//  <----------------------------------------    GAME CLEAN_UP    ---------------------------------------->
 int Game::clean() {
 	this->isRunning = false;
 
-	if(NULL == this->window)
-		return _SDL_DestroyWindow;
-	else
+	if(nullptr != this->window)
 		SDL_DestroyWindow(this->window);
 
-	if (NULL == renderer)
-		return _SDL_DestroyRenderer;
-	else
+	if (nullptr != renderer)
 		SDL_DestroyRenderer(renderer);
 
 	for(int i = 0; i < GoldCoinArray.size(); i++)
@@ -356,6 +596,8 @@ int Game::clean() {
 		delete SpikedTrapArray.at(i);
 	for (int i = 0; i < MobsArray.size(); i++)
 		delete MobsArray.at(i);
+	for (int i = 0; i < heartsArray.size(); i++)
+		delete heartsArray.at(i);
 
 	SDL_Quit();
 	return _CLEANUPSUCCES;
@@ -399,203 +641,7 @@ void Game::logErrorHandlerFile(int error, FILE* fileLogger) {
 		break;
 	}
 }
-
-pair<int, int> Game::returnHeroCoordinates(Component* hero) {
-	return make_pair(hero->getXpos(), hero->getYpos());
-}
+//  <----------------------------------------    END    ---------------------------------------->
 
 
-//pair<int, int> Game::generateRandomCoordinates(Component* hero) {
-//	int xPos, yPos;
-//
-//	do {
-//		 xPos = rand() % 19 + 2;
-//		 yPos = rand() % 24 + 2;
-//	} while (levelMap->accesMapCoordinates(xPos, yPos) < 0
-//		or ( returnHeroCoordinates(hero).first == xPos and returnHeroCoordinates(hero).second == yPos));
-//
-//	return make_pair(xPos, yPos);
-//}
 
-
-void Game::generateBluePrintMap() {
-	for (int i = 0; i < _X_MAP_BOUND; i++)
-		for (int j = 0; j < _Y_MAP_BOUND; j++)
-			mapBluePrint[i][j] = levelMap->accesMapCoordinates(i, j);
-}
-
- bool Game::notInBluePrintMap(int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], int xPos, int yPos) {
-	 return (mapBluePrint[xPos][yPos] < 0);
-}
-
-void Game::generateRandomCoordinates(vector <pair<int, int>> & list, Component* hero, int sizeOfRequieredList, int mapBluePrint[_X_MAP_BOUND][_Y_MAP_BOUND], Map* levelMap) {
-	int heroX = hero->getXpos();
-	int heroY = hero->getYpos();
-	int xPos, yPos;
-	bool inVector;
-
-	for (int i = 0; i < sizeOfRequieredList; i++) {
-		do {
-			inVector = false;
-			xPos = rand() % ( _X_MAP_BOUND - 3) + 2;
-			yPos = rand() % (_Y_MAP_BOUND - 3) + 2;
-			for (int i = 0; i < list.size(); i++)
-				if (make_pair(xPos, yPos) == list.at(i))
-					inVector = true;
-
-		} while (Game::notInBluePrintMap(mapBluePrint, xPos, yPos) 
-			or inVector or levelMap->accesMapCoordinates(yPos, xPos) < 0);
-		list.push_back( make_pair(xPos, yPos));
-	}
-}
-
-void Game::coinsManager(vector <GoldCoin*>& goldCoinArr, const int heroX, const int heroY, Component& mainPlayer) {
-	for (int i = 0; i < goldCoinArr.size(); i++) {
-		if (goldCoinArr.at(i)->getYpos() == heroY and goldCoinArr.at(i)->getXpos() == heroX) {
-			mainPlayer.increaseScore(GOLD_COIN_SCORE_INCREASE);
-			delete goldCoinArr.at(i);
-			goldCoinArr.erase(goldCoinArr.begin() + i);
-		}
-	}
-}
-
-
-void Game::trapsManager(vector <SpikedTrap*> & SpikedTrapArray, vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer) {
-	for (int i = 0; i < SpikedTrapArray.size(); i++) {
-		if (SpikedTrapArray.at(i)->isComponentActive()) {
-			if (SpikedTrapArray.at(i)->getYpos() == heroY and SpikedTrapArray.at(i)->getXpos() == heroX) {
-				mainPlayer.decreaseHealth(SPIKED_BALL_DAMAGE);
-				SpikedTrapArray.at(i)->makeComponentInactive();
-			}
-		}
-
-		for (int i = 0; i < SpikedTrapArray.size(); i++)
-			if(SpikedTrapArray.at(i)->isComponentActive()){
-				for (int j = 0; j < mobsArray.size(); j++) {
-					if (mobsArray.at(j)->isComponentActive()) {
-						if (SpikedTrapArray.at(i)->getXpos() == mobsArray.at(j)->getXpos() and SpikedTrapArray.at(i)->getYpos() == mobsArray.at(j)->getYpos()) {
-							mobsArray.at(j)->decreaseHealth(SPIKED_BALL_DAMAGE);
-							SpikedTrapArray.at(i)->makeComponentInactive();
-							if(mobsArray.at(j)->getCurrentLife() <= 0)
-								mobsArray.at(j)->makeComponentInactive();
-						}
-					}
-				}
-			}
-		}
-}
-
-
-// ! also mobs may die if they hit a spiky ball
-void Game::mobsManager(vector <Component*> & mobsArray, const int heroX, const int heroY, Component& mainPlayer, vector <SpikedTrap*> & SpikedTrapArray) {
-	for (int i = 0; i < mobsArray.size(); i++) {
-		if (mobsArray.at(i)->isComponentActive() and mobsArray.at(i)->playerIsInVision(10))
-			if (mobsArray.at(i)->getYpos() == heroY and mobsArray.at(i)->getXpos() == heroX) {
-				mainPlayer.decreaseHealth(BASIC_MOB_DAMAGE);
-			}
-		if (mobsArray.at(i)->getCurrentLife() <= 0)
-			mobsArray.at(i)->makeComponentInactive();
-	}
-}
-
-
-void Game::heartBonuses(vector <HeartBonus*> & heartArr, const int heroX, const int heroY) {
-	for (int i = 0; i < heartArr.size(); i++) {
-		if (heartArr.at(i)->isComponentActive())
-			if (heartArr.at(i)->getYpos() == heroY and heartArr.at(i)->getXpos() == heroX) {
-				heartArr.at(i)->HeroGetsBonus();
-				heartArr.at(i)->makeComponentInactive();
-			}
-	}
-}
-
-void Game::renderScore(const int currentScore) {
-	string textToDisplay = "CURRENT SCORE: " + to_string(currentScore);
-	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
-	SDL_Rect blittingRectangle;
-	blittingRectangle.x = 620;
-	blittingRectangle.y = 0;
-	blittingRectangle.h = 32;
-	blittingRectangle.w = 150;
-
-	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 230,230,250 }), 350);
-	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
-	SDL_FreeSurface(textSurface);
-	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
-}
-
-void Game::renderLife(const int currentLife) {
-	string textToDisplay = "HEALTH: " + to_string(currentLife);
-	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
-	SDL_Rect blittingRectangle;
-	blittingRectangle.x = 30;
-	blittingRectangle.y = 0;
-	blittingRectangle.h = 32;
-	blittingRectangle.w = 150;
-
-	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 255,160,122 }), 350);
-	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
-	SDL_FreeSurface(textSurface);
-	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
-}
-
-
-void Game::renderCurrentLevelNumber(const int currentLevel) {
-	string textToDisplay = "CURRENT LEVEL: " + to_string(currentLevel);
-	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
-	SDL_Rect blittingRectangle;
-	blittingRectangle.x = 320;
-	blittingRectangle.y = 0;
-	blittingRectangle.h = 32;
-	blittingRectangle.w = 150;
-
-	SDL_Surface * textSurface = TTF_RenderText_Blended_Wrapped(tahoma, textToDisplay.c_str(), SDL_Color({ 0,255,255 }), 350);
-	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(Game::renderer, textSurface);
-	SDL_FreeSurface(textSurface);
-	SDL_RenderCopy(Game::renderer, textTexture, nullptr, &blittingRectangle);
-}
-
-
-void Game::renderVoidHole(Component* hero) {
-	TTF_Font* tahoma = TTF_OpenFont(ARCHERY_BLACK, 20);
-	SDL_Rect blittingRectangle;
-	blittingRectangle.x = hero->getXpos();
-	blittingRectangle.y = hero->getYpos();
-	blittingRectangle.h = SCALESIZE;
-	blittingRectangle.w = SCALESIZE;
-	SDL_Texture* voidHoleTexture = textureManager::loadTexture(VOID_HOLE_PNG);
-	SDL_RenderCopy(Game::renderer, voidHoleTexture, nullptr, &blittingRectangle);
-}
-
-void Game::initializeStorageContainerForLevels(vector < pair<Level, levelSpecificDataContainer> > & givenVector) {
-	levelSpecificDataContainer genericLevel;
-
-	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_1;
-	genericLevel.numberOfBasicMobs = NUMBER_OF_MOBS_LEVEL_1;
-	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL1;
-	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_1;
-	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_1;
-	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_1;
-	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_1;
-	givenVector.push_back(make_pair(LEVEL_1, genericLevel));
-
-	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_2;
-	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_2;
-	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL2;
-	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_2;
-	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_2;
-	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_2;
-	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_2;
-	givenVector.push_back(make_pair(LEVEL_2, genericLevel));
-
-	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_1;
-	genericLevel.mapFilePath = FILE_PATH_MAP_LEVEL_3;
-	genericLevel.numberOfBasicMobs = NUMBER_OF_BASIC_MOBS_LEVEL_3;
-	genericLevel.numberOfCoins = NUMBER_OF_GOLD_COINS_LEVEL3;
-	genericLevel.numberOfMobs = NUMBER_OF_MOBS_LEVEL_3;
-	genericLevel.numberOfSpikedBalls = NUMBER_OF_SPIKED_BALLS_LEVEL_3;
-	genericLevel.numberOfUpgradedMobs = NUMBER_OF_UPGRADED_MOBS_LEVEL_3;
-	genericLevel.numberOfHeartsPerLevel = NUMBER_OF_HEARTS_LEVEL_3;
-	givenVector.push_back(make_pair(LEVEL_3, genericLevel));
-
-}
