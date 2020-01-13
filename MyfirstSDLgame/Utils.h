@@ -12,7 +12,7 @@
 
 
 
-// <---------------------------------------- DEFINES FOR GAME MECHANICS AND GRAPHICS ---------------------------------------->
+// <---------------------------------------- DEFINES FOR GAME MECHANICS AND GRAPHICS ------------------------AAAAAA---------------->
 #define UNDEFINED_SCORE -1
 #define _X_MAP_BOUND 25
 #define _Y_MAP_BOUND 25
