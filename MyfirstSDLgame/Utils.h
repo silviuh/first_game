@@ -69,8 +69,8 @@
 #define LEVEL_2 2
 #define LEVEL_3 3
 
-#define NUMBER_OF_GOLD_COINS_LEVEL1 3
-#define NUMBER_OF_GOLD_COINS_LEVEL2 5
+#define NUMBER_OF_GOLD_COINS_LEVEL1 4
+#define NUMBER_OF_GOLD_COINS_LEVEL2 6
 #define NUMBER_OF_GOLD_COINS_LEVEL3 8
 
 #define NUMBER_OF_HEARTS_LEVEL_1 1
@@ -116,9 +116,16 @@ const int goldCoinsPerLevel[3][2] = {
 
 
 //  <----------------------------------------      DEFINES FOR FILE PATHS     ---------------------------------------->
+
+
+
+
+// NOTICE : ABSOLUTE PATHS
+/*
 #define GRASS_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\grassTile.png"
 #define SAND_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sand.png"
 #define SKY_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\sky.png"
+#define SKY_PNG "Assets\\sky.png"
 #define GRAYBRICK_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\graybrick.png"
 #define SPIKEY_BALL_PNG "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\spiky_ball.png"
 #define FONT_MENU_ASSET "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\menuFont.otf"
@@ -147,6 +154,42 @@ const int goldCoinsPerLevel[3][2] = {
 #define FILE_PATH_MAP_LEVEL_1 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL1_MAP.txt"
 #define FILE_PATH_MAP_LEVEL_2 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL2_MAP.txt"
 #define FILE_PATH_MAP_LEVEL_3 "C:\\Users\\silviu\\source\\repos\\MyfirstSDLgame\\MyfirstSDLgame\\Assets\\LEVEL3_MAP.txt"
+*/
+
+
+
+// NOTICE : RELATIVE PATHS
+#define GRASS_PNG "Assets\\grassTile.png"
+#define SAND_PNG "Assets\\sand.png"
+#define SKY_PNG "Assets\\sky.png"
+#define GRAYBRICK_PNG "Assets\\graybrick.png"
+#define SPIKEY_BALL_PNG "Assets\\spiky_ball.png"
+#define FONT_MENU_ASSET "Assets\\menuFont.otf"
+#define GOLD_COIN_PNG "Assets\\goldCoin.png"
+
+#define EYE_BOT "Assets\\eyebot.png"
+#define HERO_PNG "Assets\\king2.png"
+#define VOID_WALKER_PNG "Assets\\voidWalker.png"
+#define MAGE_PNG "Assets\\mageClass.png"
+#define KNIGHT_PNG "Assets\\knight.png"
+#define VOID_WALKER_PNG_SELECTED "Assets\\voidWalker_selected.png"
+#define KNIGHT_PNG_SELECTED "Assets\\knight_selected.png"
+#define MAGE_PNG_SELECTED "Assets\\mage_selected.png"
+
+#define MOB_LVL_1 "Assets\\eyebot.png"
+#define MOB_LVL_2 "Assets\\eyelander.png"
+
+#define LIFE_BONUS_PNG "Assets\\lifeBonus.png"
+#define VOID_HOLE_PNG "Assets\\blackHole.png"
+
+
+#define ARCHERY_BLACK "Assets\\archeryBlack.ttf"
+#define TAHOMA "Assets\\TAHOMA.ttf"
+#define BALOO "Assets\\baloo.ttf"
+
+#define FILE_PATH_MAP_LEVEL_1 "Assets\\LEVEL1_MAP.txt"
+#define FILE_PATH_MAP_LEVEL_2 "Assets\\LEVEL2_MAP.txt"
+#define FILE_PATH_MAP_LEVEL_3 "Assets\\LEVEL3_MAP.txt"
 //  <----------------------------------------      END DEFINES     ---------------------------------------->
 
 
